@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useIsMobile } from '../hooks/use-mobile';
@@ -60,7 +59,7 @@ const Navbar = () => {
           <img 
             src="/lovable-uploads/6d506e41-9424-4159-a6c1-8940e102d924.png" 
             alt="ImperialArc" 
-            className="h-14 md:h-16" // Increased logo size
+            className="h-36 md:h-36" // Increased logo size dramatically
           />
         </Link>
 
