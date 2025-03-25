@@ -9,9 +9,9 @@ const Footer = () => {
           {/* Company Info */}
           <div>
             <img 
-              src="/lovable-uploads/6d506e41-9424-4159-a6c1-8940e102d924.png" 
+              src="/lovable-uploads/63d2298c-9df3-4389-a38c-34cec49d215a.png" 
               alt="ImperialArc" 
-              className="h-16 mb-6" // Increased logo size
+              className="h-16 md:h-20 w-auto mb-6" 
             />
             <p className="text-gray-300 mb-6">
               Established in 2012 as ANID, ImperialArc has evolved into a premier joinery and fit-out company in the MENA region, delivering exceptional hospitality and luxury residential projects.

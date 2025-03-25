@@ -34,9 +34,9 @@ const AdminSidebar = () => {
       <SidebarHeader className="flex flex-col items-center justify-center py-4">
         <div className="w-full flex justify-center py-2">
           <img 
-            src="/lovable-uploads/6d506e41-9424-4159-a6c1-8940e102d924.png" 
+            src="/lovable-uploads/63d2298c-9df3-4389-a38c-34cec49d215a.png" 
             alt="ImperialArc" 
-            className="h-12" // Increased logo size
+            className="h-12 md:h-16 w-auto" 
           />
         </div>
         <p className="text-sm text-muted-foreground">Admin Dashboard</p>

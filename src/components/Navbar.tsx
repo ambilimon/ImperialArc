@@ -58,9 +58,9 @@ const Navbar = () => {
       <div className="luxury-container flex justify-between items-center">
         <Link to="/" className="flex items-center z-20">
           <img 
-            src="/lovable-uploads/6d506e41-9424-4159-a6c1-8940e102d924.png" 
+            src="/lovable-uploads/63d2298c-9df3-4389-a38c-34cec49d215a.png" 
             alt="ImperialArc" 
-            className="h-14 md:h-16" // Increased logo size
+            className="h-10 sm:h-14 md:h-18 w-auto" 
           />
         </Link>
 
