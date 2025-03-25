@@ -21,20 +21,3 @@
     animation: logo-spin infinite 20s linear;
   }
 }
-
-/* Custom excellence label animation */
-@keyframes slide-in {
-  from {
-    transform: translateX(-100%);
-    opacity: 0;
-  }
-  to {
-    transform: translateX(0);
-    opacity: 1;
-  }
-}
-
-.excellence-label {
-  animation: slide-in 0.5s ease-out forwards;
-}
-
