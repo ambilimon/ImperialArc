@@ -69,7 +69,11 @@ const Services = () => {
         // Update existing service
         const { error } = await supabase
           .from('services')
-          .update(data)
+          .update({
+            title: data.title,
+            description: data.description,
+            icon_name: data.icon_name
+          })
           .eq('id', editingService.id);
 
         if (error) throw error;
@@ -81,7 +85,11 @@ const Services = () => {
         // Create new service
         const { error } = await supabase
           .from('services')
-          .insert([data]);
+          .insert({
+            title: data.title,
+            description: data.description,
+            icon_name: data.icon_name
+          });
 
         if (error) throw error;
         toast({

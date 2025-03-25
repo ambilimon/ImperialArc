@@ -73,7 +73,13 @@ const Projects = () => {
         // Update existing project
         const { error } = await supabase
           .from('projects')
-          .update(data)
+          .update({
+            title: data.title,
+            category: data.category,
+            location: data.location,
+            description: data.description,
+            image_url: data.image_url
+          })
           .eq('id', editingProject.id);
 
         if (error) throw error;
@@ -85,7 +91,13 @@ const Projects = () => {
         // Create new project
         const { error } = await supabase
           .from('projects')
-          .insert([data]);
+          .insert({
+            title: data.title,
+            category: data.category,
+            location: data.location,
+            description: data.description,
+            image_url: data.image_url
+          });
 
         if (error) throw error;
         toast({
