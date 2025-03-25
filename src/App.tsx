@@ -18,7 +18,6 @@ import ServicesAdmin from "./pages/admin/Services";
 import AboutEditor from "./pages/admin/AboutEditor";
 import ContactEditor from "./pages/admin/ContactEditor";
 import Contacts from "./pages/admin/Contacts";
-import TeamMembers from "./pages/admin/TeamMembers";
 import { useState } from "react";
 
 const App = () => {
@@ -48,7 +47,6 @@ const App = () => {
                 <Route path="about" element={<AboutEditor />} />
                 <Route path="contact" element={<ContactEditor />} />
                 <Route path="contacts" element={<Contacts />} />
-                <Route path="team" element={<TeamMembers />} />
               </Route>
               
               <Route path="*" element={<NotFound />} />
