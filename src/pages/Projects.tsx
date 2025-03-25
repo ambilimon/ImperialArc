@@ -37,9 +37,9 @@ const Projects = () => {
             image_url: project.image_url,
             created_at: project.created_at,
             updated_at: project.updated_at,
-            // Check if optional fields exist in the Supabase response
+            // These fields are now in the database but might be null
             completion_date: project.completion_date || undefined,
-            is_featured: project.is_featured || undefined,
+            is_featured: project.is_featured || false,
             slug: project.slug || undefined
           }));
           
