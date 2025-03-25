@@ -1,5 +1,5 @@
 
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useIsMobile } from '../hooks/use-mobile';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -60,7 +60,7 @@ const Navbar = () => {
       <div className="luxury-container flex justify-between items-center">
         <Link to="/" className="flex items-center z-20">
           <img 
-            src={isScrolled || isMobileMenuOpen ? "/logo.svg" : "/logo-light.svg"} 
+            src={isScrolled || isMobileMenuOpen ? "/logo.png" : "/logo.png"} 
             alt="ImperialArc Logo" 
             className="h-10 md:h-12" 
           />

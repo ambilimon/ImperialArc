@@ -1,4 +1,3 @@
-
 import { Home, FileText, Briefcase, Phone, LogOut, Users } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
@@ -34,7 +33,7 @@ const AdminSidebar = () => {
       <SidebarHeader className="flex flex-col items-center justify-center py-4">
         <div className="w-full flex justify-center py-2">
           <img 
-            src="/logo.svg" 
+            src="/logo.png" 
             alt="ImperialArc Logo" 
             className="h-8" 
           />
