@@ -1,8 +1,7 @@
-
+import React, { useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
-import { useEffect } from 'react';
-import { Link } from 'react-router-dom';
 
 const About = () => {
   useEffect(() => {
@@ -11,7 +10,6 @@ const About = () => {
       elements.forEach(element => {
         const position = element.getBoundingClientRect();
         
-        // If element is in viewport
         if (position.top < window.innerHeight && position.bottom >= 0) {
           element.classList.add('fade-in');
         }
@@ -19,7 +17,6 @@ const About = () => {
     };
 
     window.addEventListener('scroll', handleScroll);
-    // Trigger once for elements in view on initial load
     handleScroll();
     
     return () => window.removeEventListener('scroll', handleScroll);
@@ -90,6 +87,8 @@ const About = () => {
       ),
     },
   ];
+
+  const SHOW_TEAM_SECTION = false;
 
   return (
     <>
@@ -187,55 +186,57 @@ const About = () => {
         </div>
       </section>
 
-      {/* Team Section */}
-      <section className="py-20 md:py-32 bg-white">
-        <div className="luxury-container">
-          <div className="text-center max-w-2xl mx-auto mb-16 scroll-transition">
-            <div className="inline-block bg-imperial-blue px-3 py-1 mb-4">
-              <span className="text-white text-xs font-display tracking-wider">OUR TEAM</span>
+      {/* Team Section - Conditionally Rendered */}
+      {SHOW_TEAM_SECTION && (
+        <section className="py-20 md:py-32 bg-white">
+          <div className="luxury-container">
+            <div className="text-center max-w-2xl mx-auto mb-16 scroll-transition">
+              <div className="inline-block bg-imperial-blue px-3 py-1 mb-4">
+                <span className="text-white text-xs font-display tracking-wider">OUR TEAM</span>
+              </div>
+              <h2 className="text-3xl md:text-4xl font-serif font-semibold mb-6">
+                Meet the Experts
+              </h2>
+              <p className="text-gray-600">
+                Our talented team combines creativity, technical expertise, and a passion for exceptional design to bring your vision to life.
+              </p>
             </div>
-            <h2 className="text-3xl md:text-4xl font-serif font-semibold mb-6">
-              Meet the Experts
-            </h2>
-            <p className="text-gray-600">
-              Our talented team combines creativity, technical expertise, and a passion for exceptional design to bring your vision to life.
-            </p>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {team.map((member, index) => (
-              <div 
-                key={index} 
-                className="group relative scroll-transition"
-                style={{ animationDelay: `${index * 0.1}s` }}
-              >
-                <div className="aspect-[3/4] overflow-hidden bg-gray-100">
-                  <img
-                    src={member.image}
-                    alt={member.name}
-                    className="h-full w-full object-cover object-center transition-transform duration-700 ease-in-out group-hover:scale-110"
-                  />
-                </div>
-                
-                <div className="absolute inset-0 bg-gradient-to-t from-imperial-dark/90 via-imperial-dark/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
-                  <div className="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300 delay-75">
-                    <h3 className="text-xl font-serif text-white font-medium">{member.name}</h3>
-                    <p className="text-sm text-imperial-gold font-medium mt-1">{member.position}</p>
-                    <p className="mt-3 text-sm text-gray-300">
-                      {member.bio}
-                    </p>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+              {team.map((member, index) => (
+                <div 
+                  key={index} 
+                  className="group relative scroll-transition"
+                  style={{ animationDelay: `${index * 0.1}s` }}
+                >
+                  <div className="aspect-[3/4] overflow-hidden bg-gray-100">
+                    <img
+                      src={member.image}
+                      alt={member.name}
+                      className="h-full w-full object-cover object-center transition-transform duration-700 ease-in-out group-hover:scale-110"
+                    />
+                  </div>
+                  
+                  <div className="absolute inset-0 bg-gradient-to-t from-imperial-dark/90 via-imperial-dark/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
+                    <div className="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300 delay-75">
+                      <h3 className="text-xl font-serif text-white font-medium">{member.name}</h3>
+                      <p className="text-sm text-imperial-gold font-medium mt-1">{member.position}</p>
+                      <p className="mt-3 text-sm text-gray-300">
+                        {member.bio}
+                      </p>
+                    </div>
+                  </div>
+                  
+                  <div className="bg-white p-4 shadow-lg">
+                    <h3 className="text-lg font-serif font-semibold">{member.name}</h3>
+                    <p className="text-sm text-imperial-blue">{member.position}</p>
                   </div>
                 </div>
-                
-                <div className="bg-white p-4 shadow-lg">
-                  <h3 className="text-lg font-serif font-semibold">{member.name}</h3>
-                  <p className="text-sm text-imperial-blue">{member.position}</p>
-                </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* Why Choose Us */}
       <section className="py-20 md:py-32 bg-imperial-dark relative">
