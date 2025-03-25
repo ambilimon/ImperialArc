@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { Project, ProjectImage } from '@/types/content';
@@ -20,6 +21,7 @@ import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 interface ProjectImageWithFile extends Omit<ProjectImage, 'project_id' | 'created_at' | 'updated_at'> {
   file?: File;
   project_id?: string;
+  url?: string; // Add this property to fix the TypeScript errors
 }
 
 const projectSchema = z.object({
@@ -99,7 +101,7 @@ const Projects = () => {
       return data.map((img) => ({
         id: img.id,
         image_url: img.image_url,
-        url: img.image_url,
+        url: img.image_url, // Add url property that maps to image_url
         alt_text: img.alt_text || '',
         name: img.name || '',
         is_primary: img.is_primary || false,
@@ -156,7 +158,7 @@ const Projects = () => {
         id: newId,
         file: file,
         image_url: objectUrl,
-        url: objectUrl,
+        url: objectUrl, // Add url property that maps to image_url
         alt_text: file.name.split('.')[0] || '',
         name: file.name.split('.')[0] || '',
         is_primary: projectImages.length === 0 && validFiles.indexOf(file) === 0,
@@ -655,7 +657,7 @@ const Projects = () => {
                                       </div>
                                       <div className="w-16 h-16 relative flex-shrink-0">
                                         <img 
-                                          src={img.url} 
+                                          src={img.url || img.image_url} 
                                           alt={img.alt_text || ''}
                                           className="w-full h-full object-cover rounded-sm"
                                         />
