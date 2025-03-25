@@ -7,6 +7,21 @@ import { SidebarProvider, SidebarInset, SidebarTrigger } from '@/components/ui/s
 const AdminLayout = () => {
   const { auth } = useAuth();
 
+  // Extract any auth tokens from URL hash if present and prevent them from remaining in the URL
+  // This helps with the Supabase redirect after authentication
+  const handleAuthRedirect = () => {
+    const hash = window.location.hash;
+    if (hash && hash.includes('access_token')) {
+      // If we have tokens in the URL, we can clear them and redirect to a clean URL
+      window.history.replaceState({}, document.title, window.location.pathname);
+      return true;
+    }
+    return false;
+  };
+  
+  // Check for auth tokens in URL
+  handleAuthRedirect();
+
   if (auth.isLoading) {
     return <div className="flex h-screen items-center justify-center">Loading...</div>;
   }

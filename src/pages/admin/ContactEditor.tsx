@@ -73,7 +73,11 @@ const ContactEditor = () => {
         // Update existing content
         const { error } = await supabase
           .from('contact_info')
-          .update(data)
+          .update({
+            address: data.address,
+            phone: data.phone,
+            email: data.email
+          })
           .eq('id', contactInfo.id);
 
         if (error) throw error;
@@ -85,7 +89,11 @@ const ContactEditor = () => {
         // Create new content
         const { error } = await supabase
           .from('contact_info')
-          .insert([data]);
+          .insert({
+            address: data.address,
+            phone: data.phone,
+            email: data.email
+          });
 
         if (error) throw error;
         toast({

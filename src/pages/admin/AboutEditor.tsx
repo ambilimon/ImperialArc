@@ -70,7 +70,10 @@ const AboutEditor = () => {
         // Update existing content
         const { error } = await supabase
           .from('about_content')
-          .update(data)
+          .update({
+            title: data.title,
+            content: data.content
+          })
           .eq('id', aboutContent.id);
 
         if (error) throw error;
@@ -82,7 +85,10 @@ const AboutEditor = () => {
         // Create new content
         const { error } = await supabase
           .from('about_content')
-          .insert([data]);
+          .insert({
+            title: data.title,
+            content: data.content
+          });
 
         if (error) throw error;
         toast({
