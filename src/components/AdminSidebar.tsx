@@ -34,7 +34,7 @@ const AdminSidebar = () => {
       <SidebarHeader className="flex flex-col items-center justify-center py-4">
         <div className="w-full flex justify-center py-2">
           <img 
-            src="/logo.png" 
+            src="/lovable-uploads/6d506e41-9424-4159-a6c1-8940e102d924.png" 
             alt="ImperialArc" 
             className="h-8" 
           />
