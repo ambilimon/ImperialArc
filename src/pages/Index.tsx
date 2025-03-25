@@ -136,13 +136,13 @@ const Index = () => {
         <div className="luxury-container relative z-10 pt-24 pb-16">
           <div className="max-w-3xl animate-fade-in">
             <div className="inline-block bg-imperial-blue px-4 py-1 mb-6">
-              <span className="text-white text-sm font-display tracking-wider">INTERIOR DESIGN & FITOUTS</span>
+              <span className="text-white text-sm font-display tracking-wider">JOINERY & FIT-OUT SPECIALISTS</span>
             </div>
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-serif font-semibold text-white leading-tight mb-6">
               Crafting Exceptional Spaces, Designing Tomorrow's Luxury
             </h1>
             <p className="text-xl text-gray-300 mb-10">
-              Elevate your spaces with ImperialArc's premium interior design and fitout services across the UAE. Where vision meets perfection.
+              Elevate your spaces with ImperialArc's premium joinery and fit-out services across the UAE and MENA region. Where vision meets perfection.
             </p>
             <div className="flex flex-wrap gap-4">
               <Link to="/contact" className="luxury-btn">
@@ -171,17 +171,17 @@ const Index = () => {
                 <span className="text-white text-xs font-display tracking-wider">ABOUT IMPERIALARC</span>
               </div>
               <h2 className="text-3xl md:text-4xl font-serif font-semibold mb-6">
-                Luxury Interior Design Excellence in the UAE
+                Premier Joinery & Fit-out Excellence in the MENA Region
               </h2>
               <p className="text-gray-600 mb-6 leading-relaxed">
-                ImperialArc is a premium interior design and fitout company specializing in creating exceptional spaces that blend aesthetics with functionality. Based in the UAE, we understand the unique cultural nuances and luxury expectations of the region.
+                Established in 2012 as ANID, ImperialArc has evolved into a premier joinery and fit-out company based in Dubai. Our team brings over 60 years of combined experience in global joinery and fit-out execution, delivering exceptional hospitality and luxury residential projects across the MENA region.
               </p>
               <p className="text-gray-600 mb-8 leading-relaxed">
-                Our team of experienced designers and craftsmen work meticulously to transform your vision into reality, whether it's a residential villa, commercial office, retail space, or hospitality project.
+                Our skilled craftsmen work meticulously to transform your vision into reality, whether it's a residential villa, commercial office, retail space, or hospitality project.
               </p>
               <div className="grid grid-cols-2 gap-6 mb-8">
                 <div>
-                  <div className="text-3xl font-display font-bold text-imperial-blue mb-2">12+</div>
+                  <div className="text-3xl font-display font-bold text-imperial-blue mb-2">14+</div>
                   <p className="text-gray-500">Years of Experience</p>
                 </div>
                 <div>
@@ -189,8 +189,8 @@ const Index = () => {
                   <p className="text-gray-500">Projects Completed</p>
                 </div>
                 <div>
-                  <div className="text-3xl font-display font-bold text-imperial-blue mb-2">50+</div>
-                  <p className="text-gray-500">Design Awards</p>
+                  <div className="text-3xl font-display font-bold text-imperial-blue mb-2">60+</div>
+                  <p className="text-gray-500">Years of Combined Expertise</p>
                 </div>
                 <div>
                   <div className="text-3xl font-display font-bold text-imperial-blue mb-2">180+</div>
@@ -204,13 +204,13 @@ const Index = () => {
             
             <div className="relative order-1 lg:order-2 scroll-transition">
               <img
-                src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1800&q=80"
-                alt="Luxury Interior Design"
+                src="/lovable-uploads/159cabe8-4bd5-4c09-b250-b76b1ab5ca9c.png"
+                alt="ImperialArc Team"
                 className="w-full h-auto shadow-xl"
               />
               <div className="absolute -bottom-6 -left-6 w-24 h-24 bg-imperial-blue flex items-center justify-center shadow-lg">
                 <span className="text-white font-display font-bold text-sm text-center leading-tight">
-                  DESIGN EXCELLENCE
+                  EXCELLENCE SINCE 2012
                 </span>
               </div>
             </div>

@@ -1,3 +1,4 @@
+
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import { useEffect } from 'react';
@@ -29,11 +30,11 @@ const About = () => {
       name: 'Ahmed Al Mansouri',
       position: 'Founder & Creative Director',
       image: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=987&q=80',
-      bio: 'With over 15 years of experience in luxury interior design across the Middle East, Ahmed founded ImperialArc with a vision to redefine luxury spaces in the UAE.',
+      bio: 'With over 15 years of experience in luxury joinery and fit-out across the Middle East, Ahmed founded ImperialArc with a vision to redefine luxury spaces in the UAE.',
     },
     {
       name: 'Sara Al Zaabi',
-      position: 'Senior Interior Designer',
+      position: 'Senior Designer',
       image: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=988&q=80',
       bio: 'Sara combines her international design education with deep understanding of UAE aesthetics to create spaces that are both contemporary and culturally resonant.',
     },
@@ -113,7 +114,7 @@ const About = () => {
               The Story Behind ImperialArc
             </h1>
             <p className="text-xl text-gray-300">
-              Founded on a passion for exceptional design and a commitment to excellence, ImperialArc has become a leading name in luxury interior design across the UAE.
+              Founded on a passion for exceptional design and a commitment to excellence, ImperialArc has become a leading name in luxury joinery and fit-out across the UAE and MENA region.
             </p>
           </div>
         </div>
@@ -131,10 +132,10 @@ const About = () => {
                 From Vision to Excellence
               </h2>
               <p className="text-gray-600 mb-6 leading-relaxed">
-                ImperialArc was founded in 2010 with a clear mission: to create exceptional interior spaces that blend aesthetic beauty with functional excellence. What began as a small team of passionate designers has grown into one of the UAE's most respected interior design and fitout companies.
+                Established in 2012 as ANID, ImperialArc has evolved over the past 14 years into a premier joinery and fit-out company based in Dubai. Our journey began with a clear mission: to create exceptional interior spaces that blend aesthetic beauty with functional excellence.
               </p>
               <p className="text-gray-600 mb-6 leading-relaxed">
-                Our journey has been defined by a relentless pursuit of excellence, a deep understanding of our clients' needs, and a commitment to pushing the boundaries of design. Through the years, we've had the privilege of working on some of the most prestigious residential and commercial projects across Dubai, Abu Dhabi, and the wider UAE.
+                Our team brings over 60 years of combined experience in global joinery and fit-out execution, delivering exceptional hospitality and luxury residential projects across the MENA region. Through the years, we've had the privilege of working on some of the most prestigious residential and commercial projects across Dubai, Abu Dhabi, and the wider UAE.
               </p>
               <p className="text-gray-600 leading-relaxed">
                 Today, ImperialArc stands as a beacon of luxury design, known for our attention to detail, innovative approach, and ability to transform spaces into works of art that inspire and delight.
@@ -143,8 +144,8 @@ const About = () => {
             
             <div className="relative scroll-transition">
               <img
-                src="https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1800&q=80"
-                alt="Dubai Skyline"
+                src="/lovable-uploads/159cabe8-4bd5-4c09-b250-b76b1ab5ca9c.png"
+                alt="ImperialArc Team"
                 className="w-full h-auto rounded-none shadow-xl"
               />
               <div className="absolute -bottom-6 -right-6 w-48 h-48 border-8 border-imperial-blue"></div>
