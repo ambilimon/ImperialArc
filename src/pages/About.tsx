@@ -1,4 +1,3 @@
-
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import { useEffect } from 'react';
@@ -48,7 +47,7 @@ const About = () => {
       name: 'Fatima Rahman',
       position: 'Project Manager',
       image: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1061&q=80',
-      bio: 'Fatima's meticulous attention to detail and strong client communication skills ensure that every project runs smoothly from concept to completion.',
+      bio: "Fatima's meticulous attention to detail and strong client communication skills ensure that every project runs smoothly from concept to completion.",
     },
   ];
 

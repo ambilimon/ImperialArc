@@ -65,7 +65,7 @@ const Contact = () => {
               Get in Touch with ImperialArc
             </h1>
             <p className="text-xl text-gray-300">
-              We'd love to discuss your project and share how our expertise can transform your space into something extraordinary.
+              We&apos;d love to discuss your project and share how our expertise can transform your space into something extraordinary.
             </p>
           </div>
         </div>
@@ -179,7 +179,7 @@ const Contact = () => {
             </div>
             <div className="border-t border-gray-200 pt-4">
               <p className="text-gray-600 mb-4">
-                Our main design studio is located in the heart of Business Bay, Dubai's dynamic business district.
+                Our main design studio is located in the heart of Business Bay, Dubai&apos;s dynamic business district.
               </p>
               <a href="https://maps.app.goo.gl/ZXn22j5LAuYBr8586" target="_blank" rel="noopener noreferrer" className="luxury-btn inline-block">
                 Get Directions
@@ -209,7 +209,7 @@ const Contact = () => {
               },
               {
                 question: 'How long does a typical interior design project take?',
-                answer: 'Project timelines vary depending on the scope and complexity. A residential room redesign might take 4-6 weeks, while a complete villa or large commercial project could take 3-6 months or more. During our initial consultation, we'll provide a more accurate timeline based on your specific project requirements.'
+                answer: 'Project timelines vary depending on the scope and complexity. A residential room redesign might take 4-6 weeks, while a complete villa or large commercial project could take 3-6 months or more. During our initial consultation, we&apos;ll provide a more accurate timeline based on your specific project requirements.'
               },
               {
                 question: 'Do you handle all aspects of the project or just the design?',
@@ -221,11 +221,11 @@ const Contact = () => {
               },
               {
                 question: 'How do we get started with ImperialArc?',
-                answer: 'The first step is to schedule an initial consultation, which can be done by filling out our contact form, calling us, or sending an email. During this consultation, we'll discuss your vision, requirements, timeline, and budget. Following this, we'll prepare a proposal outlining our recommended approach and associated costs.'
+                answer: 'The first step is to schedule an initial consultation, which can be done by filling out our contact form, calling us, or sending an email. During this consultation, we&apos;ll discuss your vision, requirements, timeline, and budget. Following this, we&apos;ll prepare a proposal outlining our recommended approach and associated costs.'
               },
               {
                 question: 'Can you work within my budget?',
-                answer: 'Yes, we pride ourselves on our ability to work with various budgets while maintaining quality and aesthetic appeal. During our initial discussions, we'll be transparent about what can realistically be achieved within your budget and help prioritize elements to ensure the most impactful results.'
+                answer: 'Yes, we pride ourselves on our ability to work with various budgets while maintaining quality and aesthetic appeal. During our initial discussions, we&apos;ll be transparent about what can realistically be achieved within your budget and help prioritize elements to ensure the most impactful results.'
               }
             ].map((faq, index) => (
               <div key={index} className="bg-white p-8 shadow-lg scroll-transition" style={{ animationDelay: `${index * 0.1}s` }}>

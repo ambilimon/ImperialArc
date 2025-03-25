@@ -45,7 +45,7 @@ const Services = () => {
       id: 'commercial',
       title: 'Commercial Office Design',
       shortDescription: 'Create inspiring workspaces that boost productivity, reflect your brand identity, and impress clients.',
-      fullDescription: 'We understand that a well-designed office is not just about aesthetics—it's about creating an environment that enhances productivity, collaboration, and employee wellbeing. Our commercial design team specializes in crafting workspaces that align with your company culture, operational needs, and brand identity. From reception areas that make powerful first impressions to functional workstations and inspiring meeting spaces, we ensure every element of your office works in harmony.',
+      fullDescription: "We understand that a well-designed office is not just about aesthetics—it's about creating an environment that enhances productivity, collaboration, and employee wellbeing. Our commercial design team specializes in crafting workspaces that align with your company culture, operational needs, and brand identity. From reception areas that make powerful first impressions to functional workstations and inspiring meeting spaces, we ensure every element of your office works in harmony.",
       image: 'https://images.unsplash.com/photo-1497366754035-f200968a6e72?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1800&q=80',
       features: [
         'Corporate office design and space planning',
@@ -60,7 +60,7 @@ const Services = () => {
       id: 'hospitality',
       title: 'Hospitality Design',
       shortDescription: 'Elevate guest experiences with captivating hospitality interiors that combine luxury with functionality.',
-      fullDescription: 'In the competitive hospitality industry, exceptional design is a key differentiator that can significantly enhance guest experiences and drive business success. Our hospitality design services focus on creating immersive environments that delight guests while addressing operational requirements. From luxurious hotels and resorts to trendy boutique establishments, we craft unique, memorable spaces that embody your brand's essence and exceed guest expectations.',
+      fullDescription: 'In the competitive hospitality industry, exceptional design is a key differentiator that can significantly enhance guest experiences and drive business success. Our hospitality design services focus on creating immersive environments that delight guests while addressing operational requirements. From luxurious hotels and resorts to trendy boutique establishments, we craft unique, memorable spaces that embody your brand\'s essence and exceed guest expectations.',
       image: 'https://images.unsplash.com/photo-1582719508461-905c673771fd?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1025&q=80',
       features: [
         'Hotel lobby and reception design',
@@ -90,7 +90,7 @@ const Services = () => {
       id: 'restaurant',
       title: 'Restaurant & Café Design',
       shortDescription: 'Craft distinctive dining environments that enhance the culinary experience and keep customers coming back.',
-      fullDescription: 'In the dining industry, the ambiance is almost as important as the menu. Our restaurant and café design services create immersive dining environments that complement your culinary concept and elevate the overall dining experience. We carefully consider traffic flow, seating arrangements, acoustics, lighting, and atmospheric elements to craft spaces that delight all the senses. Whether you're launching a high-end restaurant, a casual café, or a quick-service establishment, we ensure your space tells your unique story and creates memorable experiences.',
+      fullDescription: 'In the dining industry, the ambiance is almost as important as the menu. Our restaurant and café design services create immersive dining environments that complement your culinary concept and elevate the overall dining experience. We carefully consider traffic flow, seating arrangements, acoustics, lighting, and atmospheric elements to craft spaces that delight all the senses. Whether you\'re launching a high-end restaurant, a casual café, or a quick-service establishment, we ensure your space tells your unique story and creates memorable experiences.',
       image: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1770&q=80',
       features: [
         'Concept development aligned with cuisine',
