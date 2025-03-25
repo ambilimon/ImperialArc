@@ -10,6 +10,18 @@ export type Project = {
   updated_at: string;
 };
 
+export type ProjectImage = {
+  id: string;
+  project_id: string;
+  image_url: string;
+  alt_text: string | null;
+  name: string | null;
+  is_primary: boolean;
+  display_order: number;
+  created_at: string;
+  updated_at: string;
+};
+
 export type Service = {
   id: string;
   title: string;

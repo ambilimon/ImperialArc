@@ -7,6 +7,7 @@ type ServiceCardProps = {
   title?: string;
   description?: string;
   delay?: number;
+  className?: string;
   // Allow direct props or props via a service object
   service?: {
     id: string;
@@ -17,7 +18,7 @@ type ServiceCardProps = {
 };
 
 // Map of icon names to components
-const iconMap: Record<string, React.FC> = {
+const iconMap: Record<string, React.ElementType> = {
   building: Building,
   briefcase: Briefcase,
   home: Home,
@@ -27,7 +28,7 @@ const iconMap: Record<string, React.FC> = {
   map: Map,
 };
 
-const ServiceCard = ({ icon, title, description, delay = 0, service }: ServiceCardProps) => {
+const ServiceCard = ({ icon, title, description, delay = 0, service, className = '' }: ServiceCardProps) => {
   // If service object is provided, use its properties
   const displayTitle = service?.title || title;
   const displayDescription = service?.description || description;
@@ -44,7 +45,7 @@ const ServiceCard = ({ icon, title, description, delay = 0, service }: ServiceCa
   
   return (
     <div 
-      className="bg-white p-8 shadow-lg transition-all duration-300 hover:shadow-xl hover:-translate-y-1 group animate-fade-in"
+      className={`bg-white p-8 shadow-lg transition-all duration-300 hover:shadow-xl hover:-translate-y-1 group animate-fade-in ${className}`}
       style={{ animationDelay: `${delay * 0.1}s` }}
     >
       <div className="w-16 h-16 flex items-center justify-center bg-imperial-blue text-white rounded-none mb-6 group-hover:bg-imperial-gold transition-colors duration-300">

@@ -1,7 +1,6 @@
-
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
-import { Project } from '@/types/content';
+import { Project, ProjectImage } from '@/types/content';
 import { toast } from '@/hooks/use-toast';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -18,14 +17,9 @@ import { Label } from '@/components/ui/label';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
-// Define the type for project images
-interface ProjectImage {
-  id: string;
+interface ProjectImageWithFile extends Omit<ProjectImage, 'project_id' | 'created_at' | 'updated_at'> {
   file?: File;
-  url: string;
-  alt_text: string;
-  name: string;
-  is_primary: boolean;
+  project_id?: string;
 }
 
 const projectSchema = z.object({
@@ -56,7 +50,7 @@ const Projects = () => {
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [uploading, setUploading] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
-  const [projectImages, setProjectImages] = useState<ProjectImage[]>([]);
+  const [projectImages, setProjectImages] = useState<ProjectImageWithFile[]>([]);
   const isMobile = useIsMobile();
 
   const form = useForm<ProjectFormValues>({
@@ -104,10 +98,12 @@ const Projects = () => {
       
       return data.map((img) => ({
         id: img.id,
+        image_url: img.image_url,
         url: img.image_url,
         alt_text: img.alt_text || '',
         name: img.name || '',
         is_primary: img.is_primary || false,
+        display_order: img.display_order
       }));
     } catch (error: any) {
       toast({
@@ -137,10 +133,8 @@ const Projects = () => {
     const files = e.target.files;
     if (!files || files.length === 0) return;
     
-    // Convert FileList to Array
     const fileArray = Array.from(files);
     
-    // Validate file sizes (max 5MB each)
     const invalidFiles = fileArray.filter(file => file.size > 5 * 1024 * 1024);
     if (invalidFiles.length > 0) {
       toast({
@@ -150,12 +144,10 @@ const Projects = () => {
       });
     }
     
-    // Filter valid files
     const validFiles = fileArray.filter(file => {
       return file.size <= 5 * 1024 * 1024 && file.type.startsWith('image/');
     });
     
-    // Create new project image objects for the valid files
     const newImages = validFiles.map(file => {
       const newId = Math.random().toString(36).substring(2, 15);
       const objectUrl = URL.createObjectURL(file);
@@ -163,17 +155,17 @@ const Projects = () => {
       return {
         id: newId,
         file: file,
+        image_url: objectUrl,
         url: objectUrl,
         alt_text: file.name.split('.')[0] || '',
         name: file.name.split('.')[0] || '',
-        is_primary: projectImages.length === 0 && validFiles.indexOf(file) === 0, // Set first image as primary by default
+        is_primary: projectImages.length === 0 && validFiles.indexOf(file) === 0,
+        display_order: projectImages.length
       };
     });
     
-    // Add the new images to the project images array
     setProjectImages([...projectImages, ...newImages]);
     
-    // Also set the first image as the preview url and main image if there's no primary image yet
     if (projectImages.length === 0 && newImages.length > 0) {
       setPreviewUrl(newImages[0].url);
       form.setValue('image_url', newImages[0].url);
@@ -181,14 +173,11 @@ const Projects = () => {
   };
 
   const handleImageDelete = (id: string) => {
-    // Find the image being deleted
     const deletedImage = projectImages.find(img => img.id === id);
     
-    // Update the images array
     const updatedImages = projectImages.filter(img => img.id !== id);
     setProjectImages(updatedImages);
     
-    // If we deleted the primary image, set a new primary image
     if (deletedImage?.is_primary && updatedImages.length > 0) {
       const newPrimaryImage = { ...updatedImages[0], is_primary: true };
       const otherImages = updatedImages.slice(1);
@@ -197,20 +186,17 @@ const Projects = () => {
       form.setValue('image_url', newPrimaryImage.url);
     }
     
-    // If no images left, clear the preview
     if (updatedImages.length === 0) {
       setPreviewUrl(null);
       form.setValue('image_url', '');
     }
     
-    // Revoke object URL to avoid memory leaks
     if (deletedImage?.file) {
-      URL.revokeObjectURL(deletedImage.url);
+      URL.revokeObjectURL(deletedImage.image_url);
     }
   };
 
   const handleSetPrimary = (id: string) => {
-    // Update the primary status of all images
     const updatedImages = projectImages.map(img => ({
       ...img,
       is_primary: img.id === id
@@ -218,7 +204,6 @@ const Projects = () => {
     
     setProjectImages(updatedImages);
     
-    // Update the preview and main image URL
     const primaryImage = updatedImages.find(img => img.id === id);
     if (primaryImage) {
       setPreviewUrl(primaryImage.url);
@@ -233,7 +218,12 @@ const Projects = () => {
     const [reorderedItem] = items.splice(result.source.index, 1);
     items.splice(result.destination.index, 0, reorderedItem);
     
-    setProjectImages(items);
+    const updatedItems = items.map((item, index) => ({
+      ...item,
+      display_order: index
+    }));
+    
+    setProjectImages(updatedItems);
   };
 
   const updateImageField = (id: string, field: 'alt_text' | 'name', value: string) => {
@@ -274,11 +264,9 @@ const Projects = () => {
 
   const uploadProjectImages = async (): Promise<{ urls: Record<string, string>, primaryImageUrl: string | null }> => {
     try {
-      // Create an object to store the mapping between local IDs and uploaded URLs
       const uploadedUrls: Record<string, string> = {};
       let primaryImageUrl: string | null = null;
       
-      // Upload each image that has a file attached
       for (const image of projectImages) {
         if (image.file) {
           const uploadedUrl = await uploadImage(image.file);
@@ -288,11 +276,10 @@ const Projects = () => {
             primaryImageUrl = uploadedUrl;
           }
         } else {
-          // For existing images that don't need uploading
-          uploadedUrls[image.id] = image.url;
+          uploadedUrls[image.id] = image.image_url;
           
           if (image.is_primary) {
-            primaryImageUrl = image.url;
+            primaryImageUrl = image.image_url;
           }
         }
       }
@@ -309,7 +296,6 @@ const Projects = () => {
       let projectId: string;
       let mainImageUrl = "";
       
-      // First, upload all images
       const { urls: uploadedImageUrls, primaryImageUrl } = await uploadProjectImages();
       
       if (primaryImageUrl) {
@@ -320,9 +306,7 @@ const Projects = () => {
         mainImageUrl = editingProject.image_url;
       }
       
-      // Next, save the project details
       if (editingProject) {
-        // Update existing project
         const { data: updatedProject, error } = await supabase
           .from('projects')
           .update({
@@ -343,7 +327,6 @@ const Projects = () => {
           description: 'Project updated successfully',
         });
       } else {
-        // Create new project
         const { data: newProject, error } = await supabase
           .from('projects')
           .insert({
@@ -364,9 +347,7 @@ const Projects = () => {
         });
       }
       
-      // Finally, save all project images
       if (projectImages.length > 0) {
-        // Delete existing images for this project if we're editing
         if (editingProject) {
           await supabase
             .from('project_images')
@@ -374,11 +355,10 @@ const Projects = () => {
             .eq('project_id', projectId);
         }
         
-        // Prepare the image records to insert
         const imageRecords = projectImages.map((img, index) => {
           return {
             project_id: projectId,
-            image_url: uploadedImageUrls[img.id] || img.url,
+            image_url: uploadedImageUrls[img.id] || img.image_url,
             alt_text: img.alt_text,
             name: img.name,
             is_primary: img.is_primary,
@@ -386,7 +366,6 @@ const Projects = () => {
           };
         });
         
-        // Insert all images
         const { error: imagesError } = await supabase
           .from('project_images')
           .insert(imageRecords);
@@ -394,7 +373,6 @@ const Projects = () => {
         if (imagesError) throw imagesError;
       }
 
-      // Close form and reset state
       setOpen(false);
       form.reset();
       setEditingProject(null);
@@ -422,7 +400,6 @@ const Projects = () => {
     });
     setPreviewUrl(project.image_url);
     
-    // Fetch project images
     const images = await fetchProjectImages(project.id);
     setProjectImages(images);
     
@@ -432,7 +409,6 @@ const Projects = () => {
   const handleDelete = async (id: string) => {
     if (confirm('Are you sure you want to delete this project?')) {
       try {
-        // First delete associated images
         const { error: imagesError } = await supabase
           .from('project_images')
           .delete()
@@ -440,7 +416,6 @@ const Projects = () => {
 
         if (imagesError) throw imagesError;
         
-        // Then delete the project
         const { error } = await supabase
           .from('projects')
           .delete()
@@ -503,7 +478,6 @@ const Projects = () => {
           ) : projects.length === 0 ? (
             <p className="p-4">No projects found. Add your first project.</p>
           ) : isMobile ? (
-            // Mobile card view
             <div className="divide-y">
               {projects.map((project) => (
                 <div key={project.id} className="p-4 space-y-2">
@@ -528,7 +502,6 @@ const Projects = () => {
               ))}
             </div>
           ) : (
-            // Desktop table view
             <Table>
               <TableHeader>
                 <TableRow>
@@ -683,7 +656,7 @@ const Projects = () => {
                                       <div className="w-16 h-16 relative flex-shrink-0">
                                         <img 
                                           src={img.url} 
-                                          alt={img.alt_text}
+                                          alt={img.alt_text || ''}
                                           className="w-full h-full object-cover rounded-sm"
                                         />
                                         {img.is_primary && (
@@ -697,7 +670,7 @@ const Projects = () => {
                                           <Label htmlFor={`img-name-${img.id}`} className="text-xs">Name</Label>
                                           <Input 
                                             id={`img-name-${img.id}`}
-                                            value={img.name}
+                                            value={img.name || ''}
                                             onChange={(e) => updateImageField(img.id, 'name', e.target.value)}
                                             className="h-8 text-sm"
                                           />
@@ -706,7 +679,7 @@ const Projects = () => {
                                           <Label htmlFor={`img-alt-${img.id}`} className="text-xs">Alt Text</Label>
                                           <Input 
                                             id={`img-alt-${img.id}`}
-                                            value={img.alt_text}
+                                            value={img.alt_text || ''}
                                             onChange={(e) => updateImageField(img.id, 'alt_text', e.target.value)}
                                             className="h-8 text-sm"
                                           />
