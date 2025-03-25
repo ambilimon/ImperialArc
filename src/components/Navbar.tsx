@@ -60,7 +60,7 @@ const Navbar = () => {
           <img 
             src="/lovable-uploads/6d506e41-9424-4159-a6c1-8940e102d924.png" 
             alt="ImperialArc" 
-            className="h-10 md:h-12" 
+            className="h-14 md:h-16" // Increased logo size
           />
         </Link>
 

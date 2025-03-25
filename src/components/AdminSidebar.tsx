@@ -36,7 +36,7 @@ const AdminSidebar = () => {
           <img 
             src="/lovable-uploads/6d506e41-9424-4159-a6c1-8940e102d924.png" 
             alt="ImperialArc" 
-            className="h-8" 
+            className="h-12" // Increased logo size
           />
         </div>
         <p className="text-sm text-muted-foreground">Admin Dashboard</p>
