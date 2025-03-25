@@ -1,3 +1,4 @@
+
 import { Home, FileText, Briefcase, Phone, LogOut, Users } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
@@ -35,7 +36,7 @@ const AdminSidebar = () => {
           <img 
             src="/lovable-uploads/6d506e41-9424-4159-a6c1-8940e102d924.png" 
             alt="ImperialArc" 
-            className="h-36" // Increased logo size dramatically
+            className="h-12" // Increased logo size
           />
         </div>
         <p className="text-sm text-muted-foreground">Admin Dashboard</p>

@@ -1,3 +1,4 @@
+
 import { Link } from 'react-router-dom';
 
 const Footer = () => {
@@ -10,7 +11,7 @@ const Footer = () => {
             <img 
               src="/lovable-uploads/6d506e41-9424-4159-a6c1-8940e102d924.png" 
               alt="ImperialArc" 
-              className="h-36 mb-6" // Increased logo size dramatically
+              className="h-16 mb-6" // Increased logo size
             />
             <p className="text-gray-300 mb-6">
               Established in 2012 as ANID, ImperialArc has evolved into a premier joinery and fit-out company in the MENA region, delivering exceptional hospitality and luxury residential projects.
@@ -133,4 +134,3 @@ const Footer = () => {
 };
 
 export default Footer;
-
