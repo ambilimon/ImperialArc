@@ -1,4 +1,3 @@
-
 import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Navbar from '../components/Navbar';
@@ -14,7 +13,6 @@ const Index = () => {
       elements.forEach(element => {
         const position = element.getBoundingClientRect();
         
-        // If element is in viewport
         if (position.top < window.innerHeight && position.bottom >= 0) {
           element.classList.add('fade-in');
         }
@@ -22,7 +20,6 @@ const Index = () => {
     };
 
     window.addEventListener('scroll', handleScroll);
-    // Trigger once for elements in view on initial load
     handleScroll();
     
     return () => window.removeEventListener('scroll', handleScroll);
@@ -69,6 +66,7 @@ const Index = () => {
 
   const projects = [
     {
+      id: "featured-1",
       image: 'https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1800&q=80',
       title: 'Luxury Villa Transformation',
       category: 'Residential',
@@ -76,6 +74,7 @@ const Index = () => {
       description: 'Complete interior transformation of a 10,000 sq ft villa with bespoke furnishings and custom millwork.',
     },
     {
+      id: "featured-2",
       image: 'https://images.unsplash.com/photo-1497366754035-f200968a6e72?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1800&q=80',
       title: 'Modern Corporate Office',
       category: 'Commercial',
@@ -83,6 +82,7 @@ const Index = () => {
       description: 'A contemporary office design that combines functionality with aesthetic appeal for a leading financial firm.',
     },
     {
+      id: "featured-3",
       image: 'https://images.unsplash.com/photo-1560448205-4d9b3e6bb6db?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1800&q=80',
       title: 'Premium Retail Experience',
       category: 'Retail',
@@ -90,6 +90,7 @@ const Index = () => {
       description: 'A luxury retail space designed to enhance brand experience and maximize customer engagement.',
     },
     {
+      id: "featured-4",
       image: 'https://images.unsplash.com/photo-1519167758481-83f550bb49b3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1800&q=80',
       title: 'Boutique Hotel Lobby',
       category: 'Hospitality',
@@ -272,6 +273,7 @@ const Index = () => {
             {projects.map((project, index) => (
               <ProjectCard
                 key={index}
+                id={project.id}
                 image={project.image}
                 title={project.title}
                 category={project.category}
