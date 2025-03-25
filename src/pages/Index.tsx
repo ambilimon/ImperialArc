@@ -1,3 +1,4 @@
+
 import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Navbar from '../components/Navbar';
@@ -204,15 +205,22 @@ const Index = () => {
             </div>
             
             <div className="relative order-1 lg:order-2 scroll-transition lg:pr-8">
-              <img
-                src="/lovable-uploads/6f1d5de7-3ab0-4068-8ef4-80afc5111f2a.png"
-                alt="ImperialArc Team"
-                className="w-full h-auto shadow-xl"
-              />
-              <div className="absolute -bottom-6 -left-6 w-24 h-24 bg-imperial-blue flex items-center justify-center shadow-lg">
-                <span className="text-white font-display font-bold text-sm text-center leading-tight">
-                  EXCELLENCE SINCE 2012
-                </span>
+              <div className="relative">
+                <img
+                  src="/lovable-uploads/a0492d9c-ee4d-44c8-8411-4a6cc70770a3.png"
+                  alt="ImperialArc Team"
+                  className="w-full h-auto shadow-xl"
+                />
+                <div className="absolute bottom-0 left-0 w-48 h-24 bg-imperial-blue flex items-center justify-center">
+                  <span className="text-white font-display font-bold text-xl text-center leading-tight">
+                    EXCELLENCE<br />SINCE 2012
+                  </span>
+                </div>
+                <div className="absolute -bottom-16 left-0 w-full">
+                  <div className="bg-imperial-blue text-white text-center py-3 px-6 max-w-xs mx-auto">
+                    <span className="font-display text-lg tracking-wide">ABOUT IMPERIALARC</span>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
