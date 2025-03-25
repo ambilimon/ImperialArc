@@ -81,6 +81,51 @@ export type Database = {
         }
         Relationships: []
       }
+      enquiries: {
+        Row: {
+          budget: string | null
+          created_at: string
+          email: string
+          id: string
+          location: string
+          message: string | null
+          name: string
+          phone: string
+          project_type: string
+          timeline: string | null
+          webhook_response: string | null
+          webhook_sent: boolean | null
+        }
+        Insert: {
+          budget?: string | null
+          created_at?: string
+          email: string
+          id?: string
+          location: string
+          message?: string | null
+          name: string
+          phone: string
+          project_type: string
+          timeline?: string | null
+          webhook_response?: string | null
+          webhook_sent?: boolean | null
+        }
+        Update: {
+          budget?: string | null
+          created_at?: string
+          email?: string
+          id?: string
+          location?: string
+          message?: string | null
+          name?: string
+          phone?: string
+          project_type?: string
+          timeline?: string | null
+          webhook_response?: string | null
+          webhook_sent?: boolean | null
+        }
+        Relationships: []
+      }
       projects: {
         Row: {
           category: string

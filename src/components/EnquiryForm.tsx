@@ -1,6 +1,6 @@
-
 import { useState } from 'react';
 import { toast } from 'sonner';
+import { supabase } from '@/integrations/supabase/client';
 
 type FormData = {
   name: string;
@@ -33,17 +33,70 @@ const EnquiryForm = () => {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    // Simulate API call
-    setTimeout(() => {
-      console.log('Form submitted:', formData);
+    try {
+      // Save to Supabase
+      const { data, error } = await supabase
+        .from('enquiries')
+        .insert({
+          name: formData.name,
+          email: formData.email,
+          phone: formData.phone,
+          project_type: formData.projectType,
+          location: formData.location,
+          budget: formData.budget,
+          timeline: formData.timeline,
+          message: formData.message
+        })
+        .select();
+
+      if (error) throw error;
+
+      // Try to send to webhook if configured
+      const webhookUrl = localStorage.getItem('crmWebhookUrl');
+      if (webhookUrl) {
+        try {
+          await fetch(webhookUrl, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            mode: 'no-cors',
+            body: JSON.stringify({
+              ...formData,
+              source: 'ImperialArc Website',
+              timestamp: new Date().toISOString(),
+            }),
+          });
+
+          // Mark as sent in database
+          if (data && data[0]) {
+            await supabase
+              .from('enquiries')
+              .update({ 
+                webhook_sent: true,
+                webhook_response: 'Webhook request sent automatically'
+              })
+              .eq('id', data[0].id);
+          }
+        } catch (webhookError) {
+          console.error('Webhook send error:', webhookError);
+          // Don't show this error to the user, we'll still consider the form submission successful
+        }
+      }
+
+      // Show success message
       toast.success('Your enquiry has been submitted! Our team will contact you shortly.');
       setFormData(initialFormData);
+    } catch (error) {
+      console.error('Form submission error:', error);
+      toast.error('There was an error submitting your enquiry. Please try again.');
+    } finally {
       setIsSubmitting(false);
-    }, 1500);
+    }
   };
 
   const projectTypes = [
