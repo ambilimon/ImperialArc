@@ -42,7 +42,7 @@ const Navbar = () => {
       <div className="luxury-container flex justify-between items-center">
         <Link to="/" className="flex items-center">
           <img 
-            src="/lovable-uploads/8f78daef-9b18-4a7f-bb6d-533938433f50.png" 
+            src="/logo.svg" 
             alt="ImperialArc Logo" 
             className="h-10 md:h-12" 
           />
@@ -116,3 +116,4 @@ const Navbar = () => {
 };
 
 export default Navbar;
+
