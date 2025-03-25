@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { Project } from '@/types/content';
@@ -13,14 +12,15 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Pencil, Trash2 } from 'lucide-react';
+import { Pencil, Trash2, Upload } from 'lucide-react';
+import { Label } from '@/components/ui/label';
 
 const projectSchema = z.object({
   title: z.string().min(1, { message: 'Title is required' }),
   category: z.string().min(1, { message: 'Category is required' }),
   location: z.string().min(1, { message: 'Location is required' }),
   description: z.string().min(1, { message: 'Description is required' }),
-  image_url: z.string().url({ message: 'Please enter a valid URL' }),
+  image_url: z.string().optional(),
 });
 
 type ProjectFormValues = z.infer<typeof projectSchema>;
@@ -30,6 +30,9 @@ const Projects = () => {
   const [loading, setLoading] = useState(true);
   const [open, setOpen] = useState(false);
   const [editingProject, setEditingProject] = useState<Project | null>(null);
+  const [uploadedImage, setUploadedImage] = useState<File | null>(null);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [uploading, setUploading] = useState(false);
 
   const form = useForm<ProjectFormValues>({
     resolver: zodResolver(projectSchema),
@@ -67,10 +70,59 @@ const Projects = () => {
     fetchProjects();
   }, []);
 
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    
+    setUploadedImage(file);
+    
+    const fileReader = new FileReader();
+    fileReader.onload = () => {
+      setPreviewUrl(fileReader.result as string);
+    };
+    fileReader.readAsDataURL(file);
+  };
+
+  const uploadImage = async (file: File): Promise<string> => {
+    try {
+      setUploading(true);
+      
+      const fileExt = file.name.split('.').pop();
+      const fileName = `${Math.random().toString(36).substring(2, 15)}_${Date.now()}.${fileExt}`;
+      const filePath = `projects/${fileName}`;
+      
+      const { error: uploadError } = await supabase.storage
+        .from('images')
+        .upload(filePath, file);
+        
+      if (uploadError) throw uploadError;
+      
+      const { data } = supabase.storage.from('images').getPublicUrl(filePath);
+      
+      return data.publicUrl;
+    } catch (error: any) {
+      toast({
+        title: 'Error',
+        description: error.message || 'Error uploading image',
+        variant: 'destructive',
+      });
+      throw error;
+    } finally {
+      setUploading(false);
+    }
+  };
+
   const onSubmit = async (data: ProjectFormValues) => {
     try {
+      let imageUrl = data.image_url || '';
+      
+      if (uploadedImage) {
+        imageUrl = await uploadImage(uploadedImage);
+      } else if (editingProject && !data.image_url) {
+        imageUrl = editingProject.image_url;
+      }
+      
       if (editingProject) {
-        // Update existing project
         const { error } = await supabase
           .from('projects')
           .update({
@@ -78,7 +130,7 @@ const Projects = () => {
             category: data.category,
             location: data.location,
             description: data.description,
-            image_url: data.image_url
+            image_url: imageUrl
           })
           .eq('id', editingProject.id);
 
@@ -88,7 +140,6 @@ const Projects = () => {
           description: 'Project updated successfully',
         });
       } else {
-        // Create new project
         const { error } = await supabase
           .from('projects')
           .insert({
@@ -96,7 +147,7 @@ const Projects = () => {
             category: data.category,
             location: data.location,
             description: data.description,
-            image_url: data.image_url
+            image_url: imageUrl
           });
 
         if (error) throw error;
@@ -109,6 +160,8 @@ const Projects = () => {
       setOpen(false);
       form.reset();
       setEditingProject(null);
+      setUploadedImage(null);
+      setPreviewUrl(null);
       fetchProjects();
     } catch (error: any) {
       toast({
@@ -128,6 +181,7 @@ const Projects = () => {
       description: project.description,
       image_url: project.image_url,
     });
+    setPreviewUrl(project.image_url);
     setOpen(true);
   };
 
@@ -164,6 +218,8 @@ const Projects = () => {
       description: '',
       image_url: '',
     });
+    setPreviewUrl(null);
+    setUploadedImage(null);
     setOpen(true);
   };
 
@@ -278,21 +334,55 @@ const Projects = () => {
                   </FormItem>
                 )}
               />
-              <FormField
-                control={form.control}
-                name="image_url"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Image URL</FormLabel>
-                    <FormControl>
-                      <Input placeholder="https://example.com/image.jpg" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+              
+              <div className="space-y-2">
+                <Label htmlFor="project-image">Project Image</Label>
+                <div className="flex flex-col space-y-2">
+                  <div className="flex items-center gap-2">
+                    <Input
+                      type="file"
+                      id="project-image"
+                      accept="image/*"
+                      onChange={handleImageChange}
+                      className="flex-1"
+                    />
+                    <FormField
+                      control={form.control}
+                      name="image_url"
+                      render={({ field }) => (
+                        <Input 
+                          type="hidden" 
+                          {...field} 
+                          value={field.value || ''} 
+                        />
+                      )}
+                    />
+                  </div>
+                  
+                  {previewUrl && (
+                    <div className="relative mt-2 w-full max-w-xs mx-auto">
+                      <img 
+                        src={previewUrl} 
+                        alt="Preview" 
+                        className="object-cover rounded-md border border-gray-200"
+                        style={{ maxHeight: '200px' }}
+                      />
+                    </div>
+                  )}
+                  
+                  {!previewUrl && (
+                    <div className="border border-dashed border-gray-300 rounded-md p-6 text-center">
+                      <Upload className="mx-auto h-8 w-8 text-gray-400" />
+                      <p className="mt-1 text-sm text-gray-500">Upload a project image</p>
+                    </div>
+                  )}
+                </div>
+              </div>
+              
               <DialogFooter>
-                <Button type="submit">{editingProject ? 'Update Project' : 'Add Project'}</Button>
+                <Button type="submit" disabled={uploading}>
+                  {uploading ? 'Uploading...' : editingProject ? 'Update Project' : 'Add Project'}
+                </Button>
               </DialogFooter>
             </form>
           </Form>
