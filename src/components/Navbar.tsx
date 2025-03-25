@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useIsMobile } from '../hooks/use-mobile';
@@ -23,12 +22,10 @@ const Navbar = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Close mobile menu when route changes
   useEffect(() => {
     setIsMobileMenuOpen(false);
   }, [location]);
 
-  // Prevent body scrolling when mobile menu is open
   useEffect(() => {
     if (isMobile) {
       if (isMobileMenuOpen) {
@@ -60,13 +57,12 @@ const Navbar = () => {
       <div className="luxury-container flex justify-between items-center">
         <Link to="/" className="flex items-center z-20">
           <img 
-            src={isScrolled || isMobileMenuOpen ? "/logo.png" : "/logo.png"} 
-            alt="ImperialArc Logo" 
+            src="/logo.png" 
+            alt="ImperialArc" 
             className="h-10 md:h-12" 
           />
         </Link>
 
-        {/* Desktop Navigation */}
         <div className="hidden md:flex items-center space-x-8">
           {navLinks.map((link) => (
             <Link
@@ -89,7 +85,6 @@ const Navbar = () => {
           </Link>
         </div>
 
-        {/* Mobile Menu Button */}
         <button
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           className="md:hidden flex flex-col space-y-1.5 p-2 z-20"
@@ -113,7 +108,6 @@ const Navbar = () => {
         </button>
       </div>
 
-      {/* Mobile Menu with Animation */}
       <AnimatePresence>
         {isMobileMenuOpen && (
           <motion.div

@@ -1,3 +1,4 @@
+
 import { Link } from 'react-router-dom';
 
 const Footer = () => {
@@ -9,7 +10,7 @@ const Footer = () => {
           <div>
             <img 
               src="/logo.png" 
-              alt="ImperialArc Logo" 
+              alt="ImperialArc" 
               className="h-12 mb-6" 
             />
             <p className="text-gray-300 mb-6">
