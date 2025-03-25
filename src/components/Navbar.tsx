@@ -52,7 +52,7 @@ const Navbar = () => {
   return (
     <nav
       className={`fixed w-full top-0 z-50 transition-all duration-300 ${
-        isScrolled ? 'bg-[#1A1A1A] shadow-md py-2' : 'bg-transparent py-4'
+        isScrolled ? 'bg-white shadow-md py-2' : 'bg-transparent py-4'
       }`}
     >
       <div className="luxury-container flex justify-between items-center">
@@ -65,16 +65,14 @@ const Navbar = () => {
         </Link>
 
         <div className="hidden md:flex items-center space-x-8">
-          {navLinks.map((link, index) => (
+          {navLinks.map((link) => (
             <Link
               key={link.name}
               to={link.path}
               className={`font-display font-medium text-sm tracking-wider transition-colors duration-300 ${
-                index === 0 ? 'text-[#D4AF37]' : 'text-white'
-              } ${
                 location.pathname === link.path
-                  ? 'text-[#D4AF37]'
-                  : isScrolled ? 'text-white hover:text-[#D4AF37]' : 'text-white hover:text-[#D4AF37]'
+                  ? 'text-imperial-gold'
+                  : isScrolled ? 'text-imperial-dark hover:text-imperial-gold' : 'text-white hover:text-imperial-gold'
               } link-underline`}
             >
               {link.name.toUpperCase()}
@@ -82,7 +80,7 @@ const Navbar = () => {
           ))}
           <Link 
             to="/contact" 
-            className="bg-[#000080] text-white px-6 py-3 rounded-none font-medium transition-all duration-300 hover:bg-opacity-90 hover:translate-y-[-2px]"
+            className="luxury-btn ml-4"
           >
             GET A QUOTE
           </Link>
@@ -95,18 +93,18 @@ const Navbar = () => {
         >
           <span className={`block w-6 h-0.5 transition-all duration-300 ${
             isMobileMenuOpen 
-              ? 'rotate-45 translate-y-2 bg-white' 
-              : isScrolled ? 'bg-white' : 'bg-white'
+              ? 'rotate-45 translate-y-2 bg-imperial-dark' 
+              : isScrolled ? 'bg-imperial-dark' : 'bg-white'
           }`}></span>
           <span className={`block w-6 h-0.5 transition-all duration-300 ${
             isMobileMenuOpen 
               ? 'opacity-0' 
-              : 'opacity-100 ' + (isScrolled ? 'bg-white' : 'bg-white')
+              : 'opacity-100 ' + (isScrolled ? 'bg-imperial-dark' : 'bg-white')
           }`}></span>
           <span className={`block w-6 h-0.5 transition-all duration-300 ${
             isMobileMenuOpen 
-              ? '-rotate-45 -translate-y-2 bg-white' 
-              : isScrolled ? 'bg-white' : 'bg-white'
+              ? '-rotate-45 -translate-y-2 bg-imperial-dark' 
+              : isScrolled ? 'bg-imperial-dark' : 'bg-white'
           }`}></span>
         </button>
       </div>
@@ -118,17 +116,17 @@ const Navbar = () => {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.3 }}
-            className="md:hidden fixed inset-0 bg-[#1A1A1A] z-10 pt-20"
+            className="md:hidden fixed inset-0 bg-white z-10 pt-20"
           >
             <div className="py-8 px-6 space-y-6 flex flex-col h-full">
               {navLinks.map((link) => (
                 <Link
                   key={link.name}
                   to={link.path}
-                  className={`block py-3 font-display font-medium text-base tracking-wider border-b border-gray-800 ${
+                  className={`block py-3 font-display font-medium text-base tracking-wider border-b border-gray-100 ${
                     location.pathname === link.path
-                      ? 'text-[#D4AF37]'
-                      : 'text-white hover:text-[#D4AF37]'
+                      ? 'text-imperial-gold'
+                      : 'text-imperial-dark hover:text-imperial-gold'
                   }`}
                 >
                   {link.name.toUpperCase()}
@@ -136,7 +134,7 @@ const Navbar = () => {
               ))}
               <Link 
                 to="/contact" 
-                className="bg-[#000080] text-white mt-auto mb-8 w-full text-center py-3"
+                className="luxury-btn mt-auto mb-8 w-full text-center"
               >
                 GET A QUOTE
               </Link>

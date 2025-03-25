@@ -1,3 +1,4 @@
+
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700&display=swap');
 
 @tailwind base;
@@ -67,15 +68,15 @@
   }
   
   .luxury-btn {
-    @apply inline-flex items-center justify-center bg-[#000080] text-white px-6 py-3 rounded-none font-medium transition-all duration-300 hover:bg-opacity-90 hover:translate-y-[-2px];
+    @apply inline-flex items-center justify-center bg-imperial-blue text-white px-6 py-3 rounded-none font-medium transition-all duration-300 hover:bg-opacity-90 hover:translate-y-[-2px];
   }
   
   .luxury-btn-outline {
-    @apply inline-flex items-center justify-center bg-transparent border border-[#000080] text-[#000080] px-6 py-3 rounded-none font-medium transition-all duration-300 hover:bg-[#000080] hover:text-white hover:translate-y-[-2px];
+    @apply inline-flex items-center justify-center bg-transparent border border-imperial-blue text-imperial-blue px-6 py-3 rounded-none font-medium transition-all duration-300 hover:bg-imperial-blue hover:text-white hover:translate-y-[-2px];
   }
   
   .text-gradient {
-    @apply bg-gradient-to-r from-[#000080] to-[#D4AF37] bg-clip-text text-transparent;
+    @apply bg-gradient-to-r from-imperial-blue to-imperial-gold bg-clip-text text-transparent;
   }
 
   .glass-card {
@@ -83,7 +84,7 @@
   }
 
   .link-underline {
-    @apply relative after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-0 after:bg-[#D4AF37] after:transition-all after:duration-300 hover:after:w-full;
+    @apply relative after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-0 after:bg-imperial-blue after:transition-all after:duration-300 hover:after:w-full;
   }
   
   .scroll-transition {

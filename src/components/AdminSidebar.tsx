@@ -30,7 +30,7 @@ const AdminSidebar = () => {
   ];
 
   return (
-    <Sidebar className="bg-[#1A1A1A] text-white border-r border-gray-800">
+    <Sidebar>
       <SidebarHeader className="flex flex-col items-center justify-center py-4">
         <div className="w-full flex justify-center py-2">
           <img 
@@ -39,11 +39,11 @@ const AdminSidebar = () => {
             className="h-12 md:h-16 w-auto" 
           />
         </div>
-        <p className="text-sm text-[#D4AF37]">Admin Dashboard</p>
+        <p className="text-sm text-muted-foreground">Admin Dashboard</p>
       </SidebarHeader>
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel className="text-[#D4AF37]">Management</SidebarGroupLabel>
+          <SidebarGroupLabel>Management</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {menuItems.map((item) => (
@@ -51,7 +51,6 @@ const AdminSidebar = () => {
                   <SidebarMenuButton 
                     isActive={location.pathname === item.path}
                     onClick={() => navigate(item.path)}
-                    className={location.pathname === item.path ? "text-[#D4AF37]" : "text-white hover:text-[#D4AF37]"}
                   >
                     <item.icon />
                     <span>{item.label}</span>
@@ -59,7 +58,7 @@ const AdminSidebar = () => {
                 </SidebarMenuItem>
               ))}
               <SidebarMenuItem>
-                <SidebarMenuButton onClick={signOut} className="text-white hover:text-[#D4AF37]">
+                <SidebarMenuButton onClick={signOut}>
                   <LogOut />
                   <span>Logout</span>
                 </SidebarMenuButton>
