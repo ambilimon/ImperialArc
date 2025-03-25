@@ -26,6 +26,7 @@ const AdminSidebar = () => {
     { icon: FileText, label: 'About', path: '/admin/about' },
     { icon: Phone, label: 'Contact', path: '/admin/contact' },
     { icon: Users, label: 'Contacts', path: '/admin/contacts' },
+    { icon: Users, label: 'Team', path: '/admin/team' },
   ];
 
   return (

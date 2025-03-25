@@ -1,14 +1,38 @@
 
 type TestimonialCardProps = {
-  quote: string;
-  author: string;
-  position: string;
-  company: string;
+  quote?: string;
+  author?: string;
+  position?: string;
+  company?: string;
   image?: string;
   delay?: number;
+  // For handling testimonial object
+  testimonial?: {
+    id: string;
+    name: string;
+    title: string;
+    comment: string;
+    image_url?: string;
+  };
 };
 
-const TestimonialCard = ({ quote, author, position, company, image, delay = 0 }: TestimonialCardProps) => {
+const TestimonialCard = ({ 
+  quote, 
+  author, 
+  position, 
+  company, 
+  image, 
+  delay = 0,
+  testimonial
+}: TestimonialCardProps) => {
+  // If testimonial object is provided, use its properties
+  const displayQuote = testimonial?.comment || quote;
+  const displayAuthor = testimonial?.name || author;
+  const displayPosition = testimonial?.title || position;
+  const displayImage = testimonial?.image_url || image;
+  
+  // We'll use company directly since it doesn't exist in the testimonial object
+  
   return (
     <div 
       className="bg-white p-8 shadow-lg relative group hover:shadow-xl transition-all duration-300 animate-fade-in"
@@ -21,23 +45,23 @@ const TestimonialCard = ({ quote, author, position, company, image, delay = 0 }:
       </div>
       
       <div className="mb-6 relative z-10">
-        <p className="text-gray-700 italic">{quote}</p>
+        <p className="text-gray-700 italic">{displayQuote}</p>
       </div>
       
       <div className="flex items-center">
-        {image && (
+        {displayImage && (
           <div className="mr-4">
             <img 
-              src={image} 
-              alt={author} 
+              src={displayImage} 
+              alt={displayAuthor} 
               className="w-12 h-12 rounded-full object-cover"
             />
           </div>
         )}
         <div>
-          <h4 className="font-display font-semibold text-imperial-blue">{author}</h4>
+          <h4 className="font-display font-semibold text-imperial-blue">{displayAuthor}</h4>
           <p className="text-sm text-gray-500">
-            {position}, {company}
+            {displayPosition}{company ? `, ${company}` : ''}
           </p>
         </div>
       </div>
