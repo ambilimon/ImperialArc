@@ -166,8 +166,8 @@ const Index = () => {
       {/* About Section */}
       <section className="py-20 md:py-32 bg-white">
         <div className="luxury-container">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-            <div className="scroll-transition order-2 lg:order-1">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center px-4 md:px-8 lg:px-0">
+            <div className="scroll-transition order-2 lg:order-1 lg:pl-8">
               <div className="inline-block bg-imperial-blue px-3 py-1 mb-4">
                 <span className="text-white text-xs font-display tracking-wider">ABOUT IMPERIALARC</span>
               </div>
@@ -203,9 +203,9 @@ const Index = () => {
               </Link>
             </div>
             
-            <div className="relative order-1 lg:order-2 scroll-transition">
+            <div className="relative order-1 lg:order-2 scroll-transition lg:pr-8">
               <img
-                src="/lovable-uploads/2258ca14-5ddd-4bcb-ba3a-f69b475b2e52.png"
+                src="/lovable-uploads/6f1d5de7-3ab0-4068-8ef4-80afc5111f2a.png"
                 alt="ImperialArc Team"
                 className="w-full h-auto shadow-xl"
               />
