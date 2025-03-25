@@ -8,6 +8,9 @@ export type Project = {
   image_url: string;
   created_at: string;
   updated_at: string;
+  completion_date?: string;
+  is_featured?: boolean;
+  slug?: string;
 };
 
 export type ProjectImage = {

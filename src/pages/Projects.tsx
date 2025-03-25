@@ -5,20 +5,8 @@ import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import ProjectCard from '../components/ProjectCard';
 import { supabase } from '../integrations/supabase/client';
+import { Project } from '../types/content';
 import { motion } from 'framer-motion';
-
-// Define proper type for ProjectCardProps to match ProjectCard component
-interface Project {
-  id: string;
-  title: string;
-  description: string;
-  category: string;
-  location: string;
-  completion_date: string;
-  is_featured: boolean;
-  slug: string;
-  primary_image?: string;
-}
 
 const Projects = () => {
   const [projects, setProjects] = useState<Project[]>([]);
@@ -34,16 +22,32 @@ const Projects = () => {
         const { data, error } = await supabase
           .from('projects')
           .select('*')
-          .order('completion_date', { ascending: false });
+          .order('created_at', { ascending: false });
 
         if (error) throw error;
 
         if (data) {
-          setProjects(data);
-          setFilteredProjects(data);
+          // Convert the data to match our Project type
+          const projectsData: Project[] = data.map(project => ({
+            id: project.id,
+            title: project.title,
+            category: project.category,
+            location: project.location,
+            description: project.description,
+            image_url: project.image_url,
+            created_at: project.created_at,
+            updated_at: project.updated_at,
+            // Add optional fields with undefined if they don't exist
+            completion_date: project.completion_date || undefined,
+            is_featured: project.is_featured || undefined,
+            slug: project.slug || undefined
+          }));
+          
+          setProjects(projectsData);
+          setFilteredProjects(projectsData);
           
           // Extract unique categories
-          const uniqueCategories = [...new Set(data.map(project => project.category))];
+          const uniqueCategories = [...new Set(projectsData.map(project => project.category))];
           setCategories(uniqueCategories);
         }
       } catch (error) {
@@ -143,7 +147,7 @@ const Projects = () => {
                   category={project.category}
                   location={project.location}
                   date={project.completion_date}
-                  image={project.primary_image || ''}
+                  image={project.image_url}
                   slug={project.slug}
                 />
               ))}
@@ -164,4 +168,3 @@ const Projects = () => {
 };
 
 export default Projects;
-

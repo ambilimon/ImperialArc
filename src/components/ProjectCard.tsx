@@ -1,16 +1,30 @@
 
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 type ProjectCardProps = {
+  id: string;
   image: string;
   title: string;
   category: string;
   location: string;
   description: string;
+  date?: string;
+  slug?: string;
   delay?: number;
 };
 
-const ProjectCard = ({ image, title, category, location, description, delay = 0 }: ProjectCardProps) => {
+const ProjectCard = ({ 
+  id, 
+  image, 
+  title, 
+  category, 
+  location, 
+  description, 
+  date, 
+  slug, 
+  delay = 0 
+}: ProjectCardProps) => {
   const [isHovered, setIsHovered] = useState(false);
   
   return (
@@ -38,12 +52,12 @@ const ProjectCard = ({ image, title, category, location, description, delay = 0 
           <p className="mt-3 text-sm text-gray-300 line-clamp-2">
             {description}
           </p>
-          <button className="mt-4 text-white border-b border-imperial-gold text-sm font-medium inline-flex items-center gap-1 hover:text-imperial-gold transition-colors">
+          <Link to={`/projects/${slug || id}`} className="mt-4 text-white border-b border-imperial-gold text-sm font-medium inline-flex items-center gap-1 hover:text-imperial-gold transition-colors">
             View Project
             <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
             </svg>
-          </button>
+          </Link>
         </div>
       </div>
       
