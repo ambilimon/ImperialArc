@@ -2,9 +2,53 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { useAuth } from '@/contexts/AuthContext';
 import EnquiriesTable from '@/components/EnquiriesTable';
+import { BarChart, LineChart, Users } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { supabase } from '@/integrations/supabase/client';
 
 const Dashboard = () => {
   const { auth } = useAuth();
+  const [stats, setStats] = useState({
+    totalEnquiries: 0,
+    recentEnquiries: 0,
+    pendingEnquiries: 0
+  });
+  
+  useEffect(() => {
+    fetchStatistics();
+  }, []);
+  
+  const fetchStatistics = async () => {
+    try {
+      // Get total enquiries
+      const { count: totalCount } = await supabase
+        .from('enquiries')
+        .select('*', { count: 'exact', head: true });
+      
+      // Get recent enquiries (last 7 days)
+      const sevenDaysAgo = new Date();
+      sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+      
+      const { count: recentCount } = await supabase
+        .from('enquiries')
+        .select('*', { count: 'exact', head: true })
+        .gte('created_at', sevenDaysAgo.toISOString());
+      
+      // Get pending enquiries (not sent to webhook)
+      const { count: pendingCount } = await supabase
+        .from('enquiries')
+        .select('*', { count: 'exact', head: true })
+        .eq('webhook_sent', false);
+      
+      setStats({
+        totalEnquiries: totalCount || 0,
+        recentEnquiries: recentCount || 0,
+        pendingEnquiries: pendingCount || 0
+      });
+    } catch (error) {
+      console.error('Error fetching statistics:', error);
+    }
+  };
   
   return (
     <div className="space-y-6">
@@ -23,30 +67,36 @@ const Dashboard = () => {
         
         <Card>
           <CardHeader className="pb-2">
-            <CardTitle>Projects</CardTitle>
-            <CardDescription>
-              Manage your project portfolio
-            </CardDescription>
+            <CardTitle className="flex items-center">
+              <BarChart className="mr-2 h-5 w-5 text-muted-foreground" />
+              Total Enquiries
+            </CardTitle>
           </CardHeader>
           <CardContent>
-            <p>Add, edit, or remove projects from your portfolio showcase.</p>
+            <div className="text-3xl font-bold">{stats.totalEnquiries}</div>
+            <p className="text-xs text-muted-foreground mt-1">
+              {stats.recentEnquiries} new in the last 7 days
+            </p>
           </CardContent>
         </Card>
         
         <Card>
           <CardHeader className="pb-2">
-            <CardTitle>Services</CardTitle>
-            <CardDescription>
-              Manage your service offerings
-            </CardDescription>
+            <CardTitle className="flex items-center">
+              <LineChart className="mr-2 h-5 w-5 text-muted-foreground" />
+              Pending Leads
+            </CardTitle>
           </CardHeader>
           <CardContent>
-            <p>Update the services you offer to your clients.</p>
+            <div className="text-3xl font-bold">{stats.pendingEnquiries}</div>
+            <p className="text-xs text-muted-foreground mt-1">
+              Leads not yet sent to CRM
+            </p>
           </CardContent>
         </Card>
       </div>
       
-      <EnquiriesTable limit={5} showAll={false} />
+      <EnquiriesTable showAll={true} />
     </div>
   );
 };
