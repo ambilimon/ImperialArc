@@ -13,9 +13,20 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Pencil, Trash2, Upload, Image as ImageIcon, RefreshCw } from 'lucide-react';
+import { Pencil, Trash2, Upload, Image as ImageIcon, RefreshCw, X, GripVertical } from 'lucide-react';
 import { Label } from '@/components/ui/label';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+
+// Define the type for project images
+interface ProjectImage {
+  id: string;
+  file?: File;
+  url: string;
+  alt_text: string;
+  name: string;
+  is_primary: boolean;
+}
 
 const projectSchema = z.object({
   title: z.string().min(1, { message: 'Title is required' }),
@@ -23,6 +34,15 @@ const projectSchema = z.object({
   location: z.string().min(1, { message: 'Location is required' }),
   description: z.string().min(1, { message: 'Description is required' }),
   image_url: z.string().optional(),
+  images: z.array(
+    z.object({
+      id: z.string(),
+      url: z.string(),
+      alt_text: z.string(),
+      name: z.string(),
+      is_primary: z.boolean()
+    })
+  ).optional(),
 });
 
 type ProjectFormValues = z.infer<typeof projectSchema>;
@@ -36,6 +56,7 @@ const Projects = () => {
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [uploading, setUploading] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
+  const [projectImages, setProjectImages] = useState<ProjectImage[]>([]);
   const isMobile = useIsMobile();
 
   const form = useForm<ProjectFormValues>({
@@ -46,6 +67,7 @@ const Projects = () => {
       location: '',
       description: '',
       image_url: '',
+      images: [],
     },
   });
 
@@ -70,6 +92,33 @@ const Projects = () => {
     }
   };
 
+  const fetchProjectImages = async (projectId: string) => {
+    try {
+      const { data, error } = await supabase
+        .from('project_images')
+        .select('*')
+        .eq('project_id', projectId)
+        .order('display_order', { ascending: true });
+        
+      if (error) throw error;
+      
+      return data.map((img) => ({
+        id: img.id,
+        url: img.image_url,
+        alt_text: img.alt_text || '',
+        name: img.name || '',
+        is_primary: img.is_primary || false,
+      }));
+    } catch (error: any) {
+      toast({
+        title: 'Error',
+        description: error.message || 'Could not fetch project images',
+        variant: 'destructive',
+      });
+      return [];
+    }
+  };
+
   const refreshProjects = async () => {
     setRefreshing(true);
     await fetchProjects();
@@ -84,37 +133,114 @@ const Projects = () => {
     fetchProjects();
   }, []);
 
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
+  const handleImagesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (!files || files.length === 0) return;
     
-    // Validate file size (max 5MB)
-    if (file.size > 5 * 1024 * 1024) {
+    // Convert FileList to Array
+    const fileArray = Array.from(files);
+    
+    // Validate file sizes (max 5MB each)
+    const invalidFiles = fileArray.filter(file => file.size > 5 * 1024 * 1024);
+    if (invalidFiles.length > 0) {
       toast({
-        title: 'File too large',
-        description: 'Image must be less than 5MB',
+        title: 'Files too large',
+        description: `${invalidFiles.length} image(s) are larger than 5MB and were not added`,
         variant: 'destructive',
       });
-      return;
     }
     
-    // Validate file type
-    if (!file.type.startsWith('image/')) {
-      toast({
-        title: 'Invalid file type',
-        description: 'Please upload an image file',
-        variant: 'destructive',
-      });
-      return;
+    // Filter valid files
+    const validFiles = fileArray.filter(file => {
+      return file.size <= 5 * 1024 * 1024 && file.type.startsWith('image/');
+    });
+    
+    // Create new project image objects for the valid files
+    const newImages = validFiles.map(file => {
+      const newId = Math.random().toString(36).substring(2, 15);
+      const objectUrl = URL.createObjectURL(file);
+      
+      return {
+        id: newId,
+        file: file,
+        url: objectUrl,
+        alt_text: file.name.split('.')[0] || '',
+        name: file.name.split('.')[0] || '',
+        is_primary: projectImages.length === 0 && validFiles.indexOf(file) === 0, // Set first image as primary by default
+      };
+    });
+    
+    // Add the new images to the project images array
+    setProjectImages([...projectImages, ...newImages]);
+    
+    // Also set the first image as the preview url and main image if there's no primary image yet
+    if (projectImages.length === 0 && newImages.length > 0) {
+      setPreviewUrl(newImages[0].url);
+      form.setValue('image_url', newImages[0].url);
+    }
+  };
+
+  const handleImageDelete = (id: string) => {
+    // Find the image being deleted
+    const deletedImage = projectImages.find(img => img.id === id);
+    
+    // Update the images array
+    const updatedImages = projectImages.filter(img => img.id !== id);
+    setProjectImages(updatedImages);
+    
+    // If we deleted the primary image, set a new primary image
+    if (deletedImage?.is_primary && updatedImages.length > 0) {
+      const newPrimaryImage = { ...updatedImages[0], is_primary: true };
+      const otherImages = updatedImages.slice(1);
+      setProjectImages([newPrimaryImage, ...otherImages]);
+      setPreviewUrl(newPrimaryImage.url);
+      form.setValue('image_url', newPrimaryImage.url);
     }
     
-    setUploadedImage(file);
+    // If no images left, clear the preview
+    if (updatedImages.length === 0) {
+      setPreviewUrl(null);
+      form.setValue('image_url', '');
+    }
     
-    const fileReader = new FileReader();
-    fileReader.onload = () => {
-      setPreviewUrl(fileReader.result as string);
-    };
-    fileReader.readAsDataURL(file);
+    // Revoke object URL to avoid memory leaks
+    if (deletedImage?.file) {
+      URL.revokeObjectURL(deletedImage.url);
+    }
+  };
+
+  const handleSetPrimary = (id: string) => {
+    // Update the primary status of all images
+    const updatedImages = projectImages.map(img => ({
+      ...img,
+      is_primary: img.id === id
+    }));
+    
+    setProjectImages(updatedImages);
+    
+    // Update the preview and main image URL
+    const primaryImage = updatedImages.find(img => img.id === id);
+    if (primaryImage) {
+      setPreviewUrl(primaryImage.url);
+      form.setValue('image_url', primaryImage.url);
+    }
+  };
+
+  const handleDragEnd = (result: any) => {
+    if (!result.destination) return;
+    
+    const items = Array.from(projectImages);
+    const [reorderedItem] = items.splice(result.source.index, 1);
+    items.splice(result.destination.index, 0, reorderedItem);
+    
+    setProjectImages(items);
+  };
+
+  const updateImageField = (id: string, field: 'alt_text' | 'name', value: string) => {
+    const updatedImages = projectImages.map(img => 
+      img.id === id ? { ...img, [field]: value } : img
+    );
+    setProjectImages(updatedImages);
   };
 
   const uploadImage = async (file: File): Promise<string> => {
@@ -146,56 +272,135 @@ const Projects = () => {
     }
   };
 
-  const onSubmit = async (data: ProjectFormValues) => {
+  const uploadProjectImages = async (): Promise<{ urls: Record<string, string>, primaryImageUrl: string | null }> => {
     try {
-      let imageUrl = data.image_url || '';
+      // Create an object to store the mapping between local IDs and uploaded URLs
+      const uploadedUrls: Record<string, string> = {};
+      let primaryImageUrl: string | null = null;
       
-      if (uploadedImage) {
-        imageUrl = await uploadImage(uploadedImage);
-      } else if (editingProject && !data.image_url) {
-        imageUrl = editingProject.image_url;
+      // Upload each image that has a file attached
+      for (const image of projectImages) {
+        if (image.file) {
+          const uploadedUrl = await uploadImage(image.file);
+          uploadedUrls[image.id] = uploadedUrl;
+          
+          if (image.is_primary) {
+            primaryImageUrl = uploadedUrl;
+          }
+        } else {
+          // For existing images that don't need uploading
+          uploadedUrls[image.id] = image.url;
+          
+          if (image.is_primary) {
+            primaryImageUrl = image.url;
+          }
+        }
       }
       
+      return { urls: uploadedUrls, primaryImageUrl };
+    } catch (error) {
+      console.error('Error uploading project images:', error);
+      throw error;
+    }
+  };
+
+  const onSubmit = async (data: ProjectFormValues) => {
+    try {
+      let projectId: string;
+      let mainImageUrl = "";
+      
+      // First, upload all images
+      const { urls: uploadedImageUrls, primaryImageUrl } = await uploadProjectImages();
+      
+      if (primaryImageUrl) {
+        mainImageUrl = primaryImageUrl;
+      } else if (uploadedImage) {
+        mainImageUrl = await uploadImage(uploadedImage);
+      } else if (editingProject && !data.image_url) {
+        mainImageUrl = editingProject.image_url;
+      }
+      
+      // Next, save the project details
       if (editingProject) {
-        const { error } = await supabase
+        // Update existing project
+        const { data: updatedProject, error } = await supabase
           .from('projects')
           .update({
             title: data.title,
             category: data.category,
             location: data.location,
             description: data.description,
-            image_url: imageUrl
+            image_url: mainImageUrl
           })
-          .eq('id', editingProject.id);
+          .eq('id', editingProject.id)
+          .select();
 
         if (error) throw error;
+        projectId = editingProject.id;
+        
         toast({
           title: 'Success',
           description: 'Project updated successfully',
         });
       } else {
-        const { error } = await supabase
+        // Create new project
+        const { data: newProject, error } = await supabase
           .from('projects')
           .insert({
             title: data.title,
             category: data.category,
             location: data.location,
             description: data.description,
-            image_url: imageUrl
-          });
+            image_url: mainImageUrl
+          })
+          .select();
 
         if (error) throw error;
+        projectId = newProject[0].id;
+        
         toast({
           title: 'Success',
           description: 'Project created successfully',
         });
       }
+      
+      // Finally, save all project images
+      if (projectImages.length > 0) {
+        // Delete existing images for this project if we're editing
+        if (editingProject) {
+          await supabase
+            .from('project_images')
+            .delete()
+            .eq('project_id', projectId);
+        }
+        
+        // Prepare the image records to insert
+        const imageRecords = projectImages.map((img, index) => {
+          return {
+            project_id: projectId,
+            image_url: uploadedImageUrls[img.id] || img.url,
+            alt_text: img.alt_text,
+            name: img.name,
+            is_primary: img.is_primary,
+            display_order: index
+          };
+        });
+        
+        // Insert all images
+        const { error: imagesError } = await supabase
+          .from('project_images')
+          .insert(imageRecords);
+          
+        if (imagesError) throw imagesError;
+      }
 
+      // Close form and reset state
       setOpen(false);
       form.reset();
       setEditingProject(null);
       setUploadedImage(null);
       setPreviewUrl(null);
+      setProjectImages([]);
       fetchProjects();
     } catch (error: any) {
       toast({
@@ -206,7 +411,7 @@ const Projects = () => {
     }
   };
 
-  const handleEdit = (project: Project) => {
+  const handleEdit = async (project: Project) => {
     setEditingProject(project);
     form.reset({
       title: project.title,
@@ -216,12 +421,26 @@ const Projects = () => {
       image_url: project.image_url,
     });
     setPreviewUrl(project.image_url);
+    
+    // Fetch project images
+    const images = await fetchProjectImages(project.id);
+    setProjectImages(images);
+    
     setOpen(true);
   };
 
   const handleDelete = async (id: string) => {
     if (confirm('Are you sure you want to delete this project?')) {
       try {
+        // First delete associated images
+        const { error: imagesError } = await supabase
+          .from('project_images')
+          .delete()
+          .eq('project_id', id);
+
+        if (imagesError) throw imagesError;
+        
+        // Then delete the project
         const { error } = await supabase
           .from('projects')
           .delete()
@@ -254,6 +473,7 @@ const Projects = () => {
     });
     setPreviewUrl(null);
     setUploadedImage(null);
+    setProjectImages([]);
     setOpen(true);
   };
 
@@ -343,7 +563,7 @@ const Projects = () => {
       </Card>
 
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="sm:max-w-[550px] max-h-[90vh] overflow-y-auto">
+        <DialogContent className="sm:max-w-[650px] max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle>{editingProject ? 'Edit Project' : 'Add New Project'}</DialogTitle>
             <DialogDescription>
@@ -412,16 +632,17 @@ const Projects = () => {
               />
               
               <div className="space-y-2">
-                <Label htmlFor="project-image">Project Image</Label>
+                <Label htmlFor="project-images">Project Images</Label>
                 <div className="flex flex-col space-y-2">
                   <div className="flex items-center gap-2">
                     <div className="relative w-full">
                       <Input
                         type="file"
-                        id="project-image"
+                        id="project-images"
                         accept="image/*"
-                        onChange={handleImageChange}
+                        onChange={handleImagesChange}
                         className="cursor-pointer"
+                        multiple
                       />
                     </div>
                     <FormField
@@ -437,21 +658,98 @@ const Projects = () => {
                     />
                   </div>
                   
-                  {previewUrl && (
-                    <div className="relative mt-2 w-full mx-auto">
-                      <img 
-                        src={previewUrl} 
-                        alt="Preview" 
-                        className="object-cover rounded-md border border-gray-200 max-h-[200px] mx-auto"
-                      />
+                  {projectImages.length > 0 ? (
+                    <div className="space-y-4 mt-4">
+                      <h4 className="text-sm font-medium">Project Images ({projectImages.length})</h4>
+                      <DragDropContext onDragEnd={handleDragEnd}>
+                        <Droppable droppableId="project-images">
+                          {(provided) => (
+                            <div
+                              {...provided.droppableProps}
+                              ref={provided.innerRef}
+                              className="space-y-2"
+                            >
+                              {projectImages.map((img, index) => (
+                                <Draggable key={img.id} draggableId={img.id} index={index}>
+                                  {(provided) => (
+                                    <div
+                                      ref={provided.innerRef}
+                                      {...provided.draggableProps}
+                                      className="flex items-center gap-3 p-3 bg-muted/40 rounded-md border"
+                                    >
+                                      <div {...provided.dragHandleProps} className="cursor-move">
+                                        <GripVertical className="h-5 w-5 text-muted-foreground" />
+                                      </div>
+                                      <div className="w-16 h-16 relative flex-shrink-0">
+                                        <img 
+                                          src={img.url} 
+                                          alt={img.alt_text}
+                                          className="w-full h-full object-cover rounded-sm"
+                                        />
+                                        {img.is_primary && (
+                                          <div className="absolute top-0 left-0 bg-green-600 text-white text-[10px] px-1 rounded-br">
+                                            Primary
+                                          </div>
+                                        )}
+                                      </div>
+                                      <div className="flex-1 grid grid-cols-2 gap-2">
+                                        <div>
+                                          <Label htmlFor={`img-name-${img.id}`} className="text-xs">Name</Label>
+                                          <Input 
+                                            id={`img-name-${img.id}`}
+                                            value={img.name}
+                                            onChange={(e) => updateImageField(img.id, 'name', e.target.value)}
+                                            className="h-8 text-sm"
+                                          />
+                                        </div>
+                                        <div>
+                                          <Label htmlFor={`img-alt-${img.id}`} className="text-xs">Alt Text</Label>
+                                          <Input 
+                                            id={`img-alt-${img.id}`}
+                                            value={img.alt_text}
+                                            onChange={(e) => updateImageField(img.id, 'alt_text', e.target.value)}
+                                            className="h-8 text-sm"
+                                          />
+                                        </div>
+                                      </div>
+                                      <div className="flex gap-1">
+                                        {!img.is_primary && (
+                                          <Button
+                                            type="button"
+                                            variant="outline"
+                                            size="icon"
+                                            className="h-7 w-7"
+                                            onClick={() => handleSetPrimary(img.id)}
+                                            title="Set as primary image"
+                                          >
+                                            <ImageIcon className="h-4 w-4" />
+                                          </Button>
+                                        )}
+                                        <Button
+                                          type="button"
+                                          variant="outline"
+                                          size="icon"
+                                          className="h-7 w-7 text-destructive border-destructive hover:bg-destructive hover:text-destructive-foreground"
+                                          onClick={() => handleImageDelete(img.id)}
+                                        >
+                                          <X className="h-4 w-4" />
+                                        </Button>
+                                      </div>
+                                    </div>
+                                  )}
+                                </Draggable>
+                              ))}
+                              {provided.placeholder}
+                            </div>
+                          )}
+                        </Droppable>
+                      </DragDropContext>
                     </div>
-                  )}
-                  
-                  {!previewUrl && (
-                    <div className="border border-dashed border-gray-300 rounded-md p-6 text-center">
+                  ) : (
+                    <div className="border border-dashed border-gray-300 rounded-md p-6 text-center mt-2">
                       <ImageIcon className="mx-auto h-8 w-8 text-gray-400" />
-                      <p className="mt-1 text-sm text-gray-500">Upload a project image</p>
-                      <p className="text-xs text-gray-400 mt-1">Max file size: 5MB</p>
+                      <p className="mt-1 text-sm text-gray-500">Upload project images</p>
+                      <p className="text-xs text-gray-400 mt-1">Max file size: 5MB per image</p>
                     </div>
                   )}
                 </div>
