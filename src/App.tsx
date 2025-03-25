@@ -17,6 +17,7 @@ import Projects from "./pages/admin/Projects";
 import ServicesAdmin from "./pages/admin/Services";
 import AboutEditor from "./pages/admin/AboutEditor";
 import ContactEditor from "./pages/admin/ContactEditor";
+import Contacts from "./pages/admin/Contacts";
 import { useState } from "react";
 
 const App = () => {
@@ -45,6 +46,7 @@ const App = () => {
                 <Route path="services" element={<ServicesAdmin />} />
                 <Route path="about" element={<AboutEditor />} />
                 <Route path="contact" element={<ContactEditor />} />
+                <Route path="contacts" element={<Contacts />} />
               </Route>
               
               <Route path="*" element={<NotFound />} />

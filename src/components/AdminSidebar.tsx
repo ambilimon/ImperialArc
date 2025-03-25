@@ -1,5 +1,5 @@
 
-import { Home, FileText, Briefcase, Phone, LogOut } from 'lucide-react';
+import { Home, FileText, Briefcase, Phone, LogOut, Users } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import {
@@ -25,6 +25,7 @@ const AdminSidebar = () => {
     { icon: FileText, label: 'Services', path: '/admin/services' },
     { icon: FileText, label: 'About', path: '/admin/about' },
     { icon: Phone, label: 'Contact', path: '/admin/contact' },
+    { icon: Users, label: 'Contacts', path: '/admin/contacts' },
   ];
 
   return (
