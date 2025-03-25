@@ -1,10 +1,11 @@
+
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { Project } from '@/types/content';
 import { toast } from '@/hooks/use-toast';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -12,8 +13,9 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Pencil, Trash2, Upload } from 'lucide-react';
+import { Pencil, Trash2, Upload, Image as ImageIcon, RefreshCw } from 'lucide-react';
 import { Label } from '@/components/ui/label';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 const projectSchema = z.object({
   title: z.string().min(1, { message: 'Title is required' }),
@@ -33,6 +35,8 @@ const Projects = () => {
   const [uploadedImage, setUploadedImage] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [uploading, setUploading] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
+  const isMobile = useIsMobile();
 
   const form = useForm<ProjectFormValues>({
     resolver: zodResolver(projectSchema),
@@ -66,6 +70,16 @@ const Projects = () => {
     }
   };
 
+  const refreshProjects = async () => {
+    setRefreshing(true);
+    await fetchProjects();
+    setRefreshing(false);
+    toast({
+      title: 'Refreshed',
+      description: 'Projects list has been updated',
+    });
+  };
+
   useEffect(() => {
     fetchProjects();
   }, []);
@@ -73,6 +87,26 @@ const Projects = () => {
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
+    
+    // Validate file size (max 5MB)
+    if (file.size > 5 * 1024 * 1024) {
+      toast({
+        title: 'File too large',
+        description: 'Image must be less than 5MB',
+        variant: 'destructive',
+      });
+      return;
+    }
+    
+    // Validate file type
+    if (!file.type.startsWith('image/')) {
+      toast({
+        title: 'Invalid file type',
+        description: 'Please upload an image file',
+        variant: 'destructive',
+      });
+      return;
+    }
     
     setUploadedImage(file);
     
@@ -225,18 +259,56 @@ const Projects = () => {
 
   return (
     <div className="space-y-4">
-      <div className="flex justify-between items-center">
+      <div className="flex flex-wrap justify-between items-center gap-2">
         <h2 className="text-2xl font-bold">Projects</h2>
-        <Button onClick={handleAddNew}>Add New Project</Button>
+        <div className="flex items-center gap-2">
+          <Button 
+            variant="outline" 
+            size="sm"
+            onClick={refreshProjects}
+            disabled={refreshing}
+            className="flex items-center gap-1"
+          >
+            <RefreshCw className={`h-4 w-4 ${refreshing ? 'animate-spin' : ''}`} />
+            <span className="hidden sm:inline">Refresh</span>
+          </Button>
+          <Button onClick={handleAddNew}>Add New Project</Button>
+        </div>
       </div>
 
       <Card>
-        <CardContent className="p-0">
+        <CardContent className="p-0 overflow-auto">
           {loading ? (
             <p className="p-4">Loading projects...</p>
           ) : projects.length === 0 ? (
             <p className="p-4">No projects found. Add your first project.</p>
+          ) : isMobile ? (
+            // Mobile card view
+            <div className="divide-y">
+              {projects.map((project) => (
+                <div key={project.id} className="p-4 space-y-2">
+                  <div className="flex justify-between items-center">
+                    <h3 className="font-medium">{project.title}</h3>
+                    <div className="flex space-x-2">
+                      <Button variant="ghost" size="icon" onClick={() => handleEdit(project)}>
+                        <Pencil className="h-4 w-4" />
+                      </Button>
+                      <Button variant="ghost" size="icon" onClick={() => handleDelete(project.id)}>
+                        <Trash2 className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  </div>
+                  <div>
+                    <span className="text-sm text-muted-foreground">Category:</span> {project.category}
+                  </div>
+                  <div>
+                    <span className="text-sm text-muted-foreground">Location:</span> {project.location}
+                  </div>
+                </div>
+              ))}
+            </div>
           ) : (
+            // Desktop table view
             <Table>
               <TableHeader>
                 <TableRow>
@@ -271,7 +343,7 @@ const Projects = () => {
       </Card>
 
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="sm:max-w-[550px]">
+        <DialogContent className="sm:max-w-[550px] max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle>{editingProject ? 'Edit Project' : 'Add New Project'}</DialogTitle>
             <DialogDescription>
@@ -328,7 +400,11 @@ const Projects = () => {
                   <FormItem>
                     <FormLabel>Description</FormLabel>
                     <FormControl>
-                      <Textarea placeholder="Project description" {...field} />
+                      <Textarea 
+                        placeholder="Project description" 
+                        className="min-h-[100px]" 
+                        {...field} 
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -339,13 +415,15 @@ const Projects = () => {
                 <Label htmlFor="project-image">Project Image</Label>
                 <div className="flex flex-col space-y-2">
                   <div className="flex items-center gap-2">
-                    <Input
-                      type="file"
-                      id="project-image"
-                      accept="image/*"
-                      onChange={handleImageChange}
-                      className="flex-1"
-                    />
+                    <div className="relative w-full">
+                      <Input
+                        type="file"
+                        id="project-image"
+                        accept="image/*"
+                        onChange={handleImageChange}
+                        className="cursor-pointer"
+                      />
+                    </div>
                     <FormField
                       control={form.control}
                       name="image_url"
@@ -360,27 +438,31 @@ const Projects = () => {
                   </div>
                   
                   {previewUrl && (
-                    <div className="relative mt-2 w-full max-w-xs mx-auto">
+                    <div className="relative mt-2 w-full mx-auto">
                       <img 
                         src={previewUrl} 
                         alt="Preview" 
-                        className="object-cover rounded-md border border-gray-200"
-                        style={{ maxHeight: '200px' }}
+                        className="object-cover rounded-md border border-gray-200 max-h-[200px] mx-auto"
                       />
                     </div>
                   )}
                   
                   {!previewUrl && (
                     <div className="border border-dashed border-gray-300 rounded-md p-6 text-center">
-                      <Upload className="mx-auto h-8 w-8 text-gray-400" />
+                      <ImageIcon className="mx-auto h-8 w-8 text-gray-400" />
                       <p className="mt-1 text-sm text-gray-500">Upload a project image</p>
+                      <p className="text-xs text-gray-400 mt-1">Max file size: 5MB</p>
                     </div>
                   )}
                 </div>
               </div>
               
-              <DialogFooter>
-                <Button type="submit" disabled={uploading}>
+              <DialogFooter className="pt-4">
+                <Button 
+                  type="submit" 
+                  disabled={uploading} 
+                  className="w-full sm:w-auto"
+                >
                   {uploading ? 'Uploading...' : editingProject ? 'Update Project' : 'Add Project'}
                 </Button>
               </DialogFooter>
