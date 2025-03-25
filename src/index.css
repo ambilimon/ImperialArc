@@ -94,4 +94,60 @@
   .scroll-transition.fade-in {
     @apply opacity-100;
   }
+
+  /* Mobile specific utility classes */
+  .mobile-scroll-x {
+    @apply flex overflow-x-auto pb-2 -mx-4 px-4 gap-3 flex-nowrap snap-x;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none; /* Firefox */
+  }
+  
+  .mobile-scroll-x::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Edge */
+  }
+  
+  .mobile-snap-item {
+    @apply flex-shrink-0 snap-start;
+  }
+  
+  /* Improved touch interactions */
+  .touch-target {
+    @apply min-h-[44px] min-w-[44px]; /* Minimum size for comfortable touch */
+  }
+  
+  /* Safe area padding for mobile devices with notches */
+  .safe-padding {
+    @apply px-safe py-safe;
+  }
+  
+  /* Fix for 100vh on mobile browsers */
+  .mobile-full-height {
+    height: 100vh; /* fallback */
+    height: -webkit-fill-available;
+    height: stretch; /* the standard */
+  }
+  
+  /* Prevent fixed background blur on mobile */
+  .no-backdrop-blur {
+    @apply backdrop-blur-none;
+  }
+}
+
+/* Add smooth scrolling behavior */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Improved form elements for mobile */
+@media (max-width: 768px) {
+  input, select, textarea, button {
+    @apply text-base p-3; /* Larger text and padding on mobile */
+  }
+}
+
+/* Safari iOS specific fixes */
+@supports (-webkit-touch-callout: none) {
+  .mobile-full-height {
+    height: -webkit-fill-available;
+  }
 }

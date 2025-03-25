@@ -1,11 +1,14 @@
 
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import { useIsMobile } from '../hooks/use-mobile';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const location = useLocation();
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -25,6 +28,21 @@ const Navbar = () => {
     setIsMobileMenuOpen(false);
   }, [location]);
 
+  // Prevent body scrolling when mobile menu is open
+  useEffect(() => {
+    if (isMobile) {
+      if (isMobileMenuOpen) {
+        document.body.style.overflow = 'hidden';
+      } else {
+        document.body.style.overflow = '';
+      }
+    }
+    
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isMobileMenuOpen, isMobile]);
+
   const navLinks = [
     { name: 'Home', path: '/' },
     { name: 'About', path: '/about' },
@@ -40,7 +58,7 @@ const Navbar = () => {
       }`}
     >
       <div className="luxury-container flex justify-between items-center">
-        <Link to="/" className="flex items-center">
+        <Link to="/" className="flex items-center z-20">
           <img 
             src="/logo.svg" 
             alt="ImperialArc Logo" 
@@ -74,46 +92,63 @@ const Navbar = () => {
         {/* Mobile Menu Button */}
         <button
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          className="md:hidden flex flex-col space-y-1.5 p-2"
+          className="md:hidden flex flex-col space-y-1.5 p-2 z-20"
           aria-label="Toggle menu"
         >
-          <span className={`block w-6 h-0.5 ${isScrolled ? 'bg-imperial-dark' : 'bg-white'} transition-all duration-300 ${isMobileMenuOpen ? 'rotate-45 translate-y-2' : ''}`}></span>
-          <span className={`block w-6 h-0.5 ${isScrolled ? 'bg-imperial-dark' : 'bg-white'} transition-all duration-300 ${isMobileMenuOpen ? 'opacity-0' : 'opacity-100'}`}></span>
-          <span className={`block w-6 h-0.5 ${isScrolled ? 'bg-imperial-dark' : 'bg-white'} transition-all duration-300 ${isMobileMenuOpen ? '-rotate-45 -translate-y-2' : ''}`}></span>
+          <span className={`block w-6 h-0.5 transition-all duration-300 ${
+            isMobileMenuOpen 
+              ? 'rotate-45 translate-y-2 bg-imperial-dark' 
+              : isScrolled ? 'bg-imperial-dark' : 'bg-white'
+          }`}></span>
+          <span className={`block w-6 h-0.5 transition-all duration-300 ${
+            isMobileMenuOpen 
+              ? 'opacity-0' 
+              : 'opacity-100 ' + (isScrolled ? 'bg-imperial-dark' : 'bg-white')
+          }`}></span>
+          <span className={`block w-6 h-0.5 transition-all duration-300 ${
+            isMobileMenuOpen 
+              ? '-rotate-45 -translate-y-2 bg-imperial-dark' 
+              : isScrolled ? 'bg-imperial-dark' : 'bg-white'
+          }`}></span>
         </button>
       </div>
 
-      {/* Mobile Menu */}
-      <div
-        className={`md:hidden absolute w-full bg-white shadow-lg transition-all duration-500 ease-in-out ${
-          isMobileMenuOpen ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-10 pointer-events-none'
-        }`}
-      >
-        <div className="py-5 px-6 space-y-4">
-          {navLinks.map((link) => (
-            <Link
-              key={link.name}
-              to={link.path}
-              className={`block py-2 font-display font-medium text-sm tracking-wider ${
-                location.pathname === link.path
-                  ? 'text-imperial-gold'
-                  : 'text-imperial-dark hover:text-imperial-gold'
-              }`}
-            >
-              {link.name.toUpperCase()}
-            </Link>
-          ))}
-          <Link 
-            to="/contact" 
-            className="block w-full text-center luxury-btn mt-4"
+      {/* Mobile Menu with Animation */}
+      <AnimatePresence>
+        {isMobileMenuOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.3 }}
+            className="md:hidden fixed inset-0 bg-white z-10 pt-20"
           >
-            GET A QUOTE
-          </Link>
-        </div>
-      </div>
+            <div className="py-8 px-6 space-y-6 flex flex-col h-full">
+              {navLinks.map((link) => (
+                <Link
+                  key={link.name}
+                  to={link.path}
+                  className={`block py-3 font-display font-medium text-base tracking-wider border-b border-gray-100 ${
+                    location.pathname === link.path
+                      ? 'text-imperial-gold'
+                      : 'text-imperial-dark hover:text-imperial-gold'
+                  }`}
+                >
+                  {link.name.toUpperCase()}
+                </Link>
+              ))}
+              <Link 
+                to="/contact" 
+                className="luxury-btn mt-auto mb-8 w-full text-center"
+              >
+                GET A QUOTE
+              </Link>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </nav>
   );
 };
 
 export default Navbar;
-

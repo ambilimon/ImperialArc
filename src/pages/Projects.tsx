@@ -7,6 +7,7 @@ import ProjectCard from '../components/ProjectCard';
 import { supabase } from '../integrations/supabase/client';
 import { Project } from '../types/content';
 import { motion } from 'framer-motion';
+import { useIsMobile } from '../hooks/use-mobile';
 
 const Projects = () => {
   const [projects, setProjects] = useState<Project[]>([]);
@@ -14,6 +15,7 @@ const Projects = () => {
   const [categories, setCategories] = useState<string[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [loading, setLoading] = useState<boolean>(true);
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     const fetchProjects = async () => {
@@ -103,15 +105,15 @@ const Projects = () => {
         </div>
 
         {/* Filter Categories */}
-        <div className="luxury-container py-12">
-          <div className="flex flex-wrap justify-center gap-4 mb-12">
+        <div className="luxury-container py-8 md:py-12">
+          <div className={`flex flex-wrap justify-center gap-3 md:gap-4 mb-8 md:mb-12 ${isMobile ? 'overflow-x-auto px-4 pb-2 -mx-4 flex-nowrap justify-start' : ''}`}>
             <button
               onClick={() => setSelectedCategory('all')}
-              className={`px-6 py-2 border transition-all duration-300 ${
+              className={`px-4 md:px-6 py-2 border text-sm md:text-base transition-all duration-300 ${
                 selectedCategory === 'all'
                   ? 'bg-imperial-blue text-white border-imperial-blue'
                   : 'border-gray-300 hover:border-imperial-blue'
-              }`}
+              } ${isMobile ? 'flex-shrink-0' : ''}`}
             >
               All Projects
             </button>
@@ -119,11 +121,11 @@ const Projects = () => {
               <button
                 key={category}
                 onClick={() => setSelectedCategory(category)}
-                className={`px-6 py-2 border transition-all duration-300 ${
+                className={`px-4 md:px-6 py-2 border text-sm md:text-base transition-all duration-300 ${
                   selectedCategory === category
                     ? 'bg-imperial-blue text-white border-imperial-blue'
                     : 'border-gray-300 hover:border-imperial-blue'
-                }`}
+                } ${isMobile ? 'flex-shrink-0' : ''}`}
               >
                 {category}
               </button>
@@ -137,7 +139,7 @@ const Projects = () => {
               <p className="mt-4 text-gray-600">Loading projects...</p>
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 px-4 md:px-0">
               {filteredProjects.map((project) => (
                 <ProjectCard 
                   key={project.id}
