@@ -204,7 +204,7 @@ const Index = () => {
             
             <div className="relative order-1 lg:order-2 scroll-transition">
               <img
-                src="/lovable-uploads/159cabe8-4bd5-4c09-b250-b76b1ab5ca9c.png"
+                src="/lovable-uploads/2258ca14-5ddd-4bcb-ba3a-f69b475b2e52.png"
                 alt="ImperialArc Team"
                 className="w-full h-auto shadow-xl"
               />
