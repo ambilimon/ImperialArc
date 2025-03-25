@@ -56,8 +56,8 @@ const Navbar = () => {
               to={link.path}
               className={`font-display font-medium text-sm tracking-wider transition-colors duration-300 ${
                 location.pathname === link.path
-                  ? 'text-imperial-blue'
-                  : 'text-imperial-dark hover:text-imperial-blue'
+                  ? 'text-imperial-gold'
+                  : isScrolled ? 'text-imperial-dark hover:text-imperial-gold' : 'text-white hover:text-imperial-gold'
               } link-underline`}
             >
               {link.name.toUpperCase()}
@@ -77,9 +77,9 @@ const Navbar = () => {
           className="md:hidden flex flex-col space-y-1.5 p-2"
           aria-label="Toggle menu"
         >
-          <span className={`block w-6 h-0.5 bg-imperial-dark transition-all duration-300 ${isMobileMenuOpen ? 'rotate-45 translate-y-2' : ''}`}></span>
-          <span className={`block w-6 h-0.5 bg-imperial-dark transition-all duration-300 ${isMobileMenuOpen ? 'opacity-0' : 'opacity-100'}`}></span>
-          <span className={`block w-6 h-0.5 bg-imperial-dark transition-all duration-300 ${isMobileMenuOpen ? '-rotate-45 -translate-y-2' : ''}`}></span>
+          <span className={`block w-6 h-0.5 ${isScrolled ? 'bg-imperial-dark' : 'bg-white'} transition-all duration-300 ${isMobileMenuOpen ? 'rotate-45 translate-y-2' : ''}`}></span>
+          <span className={`block w-6 h-0.5 ${isScrolled ? 'bg-imperial-dark' : 'bg-white'} transition-all duration-300 ${isMobileMenuOpen ? 'opacity-0' : 'opacity-100'}`}></span>
+          <span className={`block w-6 h-0.5 ${isScrolled ? 'bg-imperial-dark' : 'bg-white'} transition-all duration-300 ${isMobileMenuOpen ? '-rotate-45 -translate-y-2' : ''}`}></span>
         </button>
       </div>
 
@@ -96,8 +96,8 @@ const Navbar = () => {
               to={link.path}
               className={`block py-2 font-display font-medium text-sm tracking-wider ${
                 location.pathname === link.path
-                  ? 'text-imperial-blue'
-                  : 'text-imperial-dark'
+                  ? 'text-imperial-gold'
+                  : 'text-imperial-dark hover:text-imperial-gold'
               }`}
             >
               {link.name.toUpperCase()}
