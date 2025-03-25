@@ -1,7 +1,7 @@
 
 import { useState } from 'react';
 
-type ProjectCardProps = {
+export type ProjectCardProps = {
   image: string;
   title: string;
   category: string;
@@ -10,8 +10,32 @@ type ProjectCardProps = {
   delay?: number;
 };
 
-const ProjectCard = ({ image, title, category, location, description, delay = 0 }: ProjectCardProps) => {
+// Alternative prop type that accepts the project object
+export interface ProjectWithObjectProps {
+  project: {
+    id: string;
+    title: string;
+    category: string;
+    location: string;
+    description: string;
+    image_url: string;
+  };
+  delay?: number;
+}
+
+const ProjectCard = (props: ProjectCardProps | ProjectWithObjectProps) => {
   const [isHovered, setIsHovered] = useState(false);
+  
+  // Determine if we're using the object-based props or direct props
+  const isObjectProps = 'project' in props;
+  
+  // Extract the actual values we need
+  const title = isObjectProps ? props.project.title : props.title;
+  const category = isObjectProps ? props.project.category : props.category;
+  const location = isObjectProps ? props.project.location : props.location;
+  const description = isObjectProps ? props.project.description : props.description;
+  const image = isObjectProps ? props.project.image_url : props.image;
+  const delay = props.delay || 0;
   
   return (
     <div 

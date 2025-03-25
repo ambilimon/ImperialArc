@@ -1,5 +1,5 @@
 
-type TestimonialCardProps = {
+export type TestimonialCardProps = {
   quote: string;
   author: string;
   position: string;
@@ -8,7 +8,30 @@ type TestimonialCardProps = {
   delay?: number;
 };
 
-const TestimonialCard = ({ quote, author, position, company, image, delay = 0 }: TestimonialCardProps) => {
+// Alternative prop type that accepts the testimonial object
+export interface TestimonialWithObjectProps {
+  testimonial: {
+    id: string;
+    name: string;
+    title: string;
+    comment: string;
+    image_url: string;
+  };
+  delay?: number;
+}
+
+const TestimonialCard = (props: TestimonialCardProps | TestimonialWithObjectProps) => {
+  // Determine if we're using the object-based props or direct props
+  const isObjectProps = 'testimonial' in props;
+  
+  // Extract the actual values we need
+  const quote = isObjectProps ? props.testimonial.comment : props.quote;
+  const author = isObjectProps ? props.testimonial.name : props.author;
+  const position = isObjectProps ? props.testimonial.title.split(',')[0] || props.testimonial.title : props.position;
+  const company = isObjectProps ? props.testimonial.title.split(',')[1]?.trim() || '' : props.company;
+  const image = isObjectProps ? props.testimonial.image_url : props.image;
+  const delay = props.delay || 0;
+
   return (
     <div 
       className="bg-white p-8 shadow-lg relative group hover:shadow-xl transition-all duration-300 animate-fade-in"
@@ -37,7 +60,7 @@ const TestimonialCard = ({ quote, author, position, company, image, delay = 0 }:
         <div>
           <h4 className="font-display font-semibold text-imperial-blue">{author}</h4>
           <p className="text-sm text-gray-500">
-            {position}, {company}
+            {position}{company ? `, ${company}` : ''}
           </p>
         </div>
       </div>
