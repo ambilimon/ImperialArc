@@ -8,9 +8,9 @@ const Footer = () => {
           {/* Company Info */}
           <div>
             <img 
-              src="/lovable-uploads/832c9db0-ce68-43da-a4f1-fd68503046e6.png" 
+              src="/lovable-uploads/6d506e41-9424-4159-a6c1-8940e102d924.png" 
               alt="ImperialArc" 
-              className="h-16 mb-6" 
+              className="h-12 mb-6" 
             />
             <p className="text-gray-300 mb-6">
               Established in 2012 as ANID, ImperialArc has evolved into a premier joinery and fit-out company in the MENA region, delivering exceptional hospitality and luxury residential projects.
@@ -133,4 +133,3 @@ const Footer = () => {
 };
 
 export default Footer;
-
