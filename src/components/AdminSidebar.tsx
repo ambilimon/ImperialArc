@@ -32,7 +32,13 @@ const AdminSidebar = () => {
   return (
     <Sidebar>
       <SidebarHeader className="flex flex-col items-center justify-center py-4">
-        <h1 className="text-xl font-bold">Imperial Arc</h1>
+        <div className="w-full flex justify-center py-2">
+          <img 
+            src="/logo.svg" 
+            alt="ImperialArc Logo" 
+            className="h-8" 
+          />
+        </div>
         <p className="text-sm text-muted-foreground">Admin Dashboard</p>
       </SidebarHeader>
       <SidebarContent>

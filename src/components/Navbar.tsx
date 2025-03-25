@@ -60,7 +60,7 @@ const Navbar = () => {
       <div className="luxury-container flex justify-between items-center">
         <Link to="/" className="flex items-center z-20">
           <img 
-            src="/logo.svg" 
+            src={isScrolled || isMobileMenuOpen ? "/logo.svg" : "/logo-light.svg"} 
             alt="ImperialArc Logo" 
             className="h-10 md:h-12" 
           />

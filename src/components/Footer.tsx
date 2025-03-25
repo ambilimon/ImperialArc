@@ -9,7 +9,7 @@ const Footer = () => {
           {/* Company Info */}
           <div>
             <img 
-              src="/logo.svg" 
+              src="/logo-light.svg" 
               alt="ImperialArc Logo" 
               className="h-12 mb-6" 
             />
@@ -134,4 +134,3 @@ const Footer = () => {
 };
 
 export default Footer;
-
