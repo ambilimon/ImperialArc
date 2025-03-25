@@ -19,11 +19,11 @@ import AboutEditor from "./pages/admin/AboutEditor";
 import ContactEditor from "./pages/admin/ContactEditor";
 import Contacts from "./pages/admin/Contacts";
 import TeamMembers from "./pages/admin/TeamMembers";
-import { useState } from "react";
+import React from 'react';
 
 const App = () => {
   // Create a client
-  const [queryClient] = useState(() => new QueryClient());
+  const [queryClient] = React.useState(() => new QueryClient());
 
   return (
     <QueryClientProvider client={queryClient}>

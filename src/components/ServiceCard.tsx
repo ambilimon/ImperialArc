@@ -3,9 +3,9 @@ import React from 'react';
 import { Building, Briefcase, Home, Ruler, PaintBucket, Compass, Map } from 'lucide-react';
 
 type ServiceCardProps = {
-  icon: React.ReactNode;
-  title: string;
-  description: string;
+  icon?: React.ReactNode;
+  title?: string;
+  description?: string;
   delay?: number;
   // Allow direct props or props via a service object
   service?: {
@@ -38,7 +38,7 @@ const ServiceCard = ({ icon, title, description, delay = 0, service }: ServiceCa
   if (service?.icon_name) {
     const IconComponent = iconMap[service.icon_name.toLowerCase()];
     if (IconComponent) {
-      displayIcon = <IconComponent size={24} />;
+      displayIcon = <IconComponent className="h-6 w-6" />;
     }
   }
   
