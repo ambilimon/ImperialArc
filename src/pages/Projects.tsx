@@ -83,7 +83,7 @@ const Projects = () => {
         {/* Hero Section */}
         <div className="relative h-[40vh] md:h-[50vh] lg:h-[60vh] bg-imperial-dark overflow-hidden">
           <div className="absolute inset-0 bg-black opacity-60 z-10"></div>
-          <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1488590528505-98d2b5aba04b')] bg-cover bg-center"></div>
+          <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1616486338812-3dadae4b4ace')] bg-cover bg-center"></div>
           <div className="relative z-20 h-full flex flex-col items-center justify-center text-center text-white px-4">
             <motion.h1 
               className="text-3xl md:text-4xl lg:text-5xl font-serif font-bold mb-4"
