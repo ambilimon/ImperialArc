@@ -160,13 +160,13 @@ const Index = () => {
         <div className="luxury-container relative z-10 pt-24 pb-16">
           <div className="max-w-3xl animate-fade-in">
             <div className="inline-block bg-imperial-blue px-4 py-1 mb-6">
-              <span className="text-white text-sm font-display tracking-wider">JOINERY & FIT-OUT SPECIALISTS</span>
+              <span className="text-white text-sm font-display tracking-wider">INTERIORS & FIT-OUT SPECIALISTS</span>
             </div>
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-serif font-semibold text-white leading-tight mb-6">
               Crafting Exceptional Spaces, Designing Tomorrow's Luxury
             </h1>
             <p className="text-xl text-gray-300 mb-10">
-              Elevate your spaces with ImperialArc's premium joinery and fit-out services across the UAE and MENA region. Where vision meets perfection.
+              Elevate your spaces with ImperialArc's premium interiors and fit-out services across the UAE and MENA region. Where vision meets perfection.
             </p>
             <div className="flex flex-wrap gap-4">
               <Link to="/contact" className="luxury-btn">
@@ -195,10 +195,10 @@ const Index = () => {
                 <span className="text-white text-xs font-display tracking-wider">ABOUT IMPERIALARC</span>
               </div>
               <h2 className="text-3xl md:text-4xl font-serif font-semibold mb-6">
-                Premier Joinery & Fit-out Excellence in the MENA Region
+                Premier Interiors & Fit-out Excellence in the MENA Region
               </h2>
               <p className="text-gray-600 mb-6 leading-relaxed">
-                Established in 2012 as ANID, ImperialArc has evolved into a premier joinery and fit-out company based in Dubai. Our team brings over 60 years of combined experience in global joinery and fit-out execution, delivering exceptional hospitality and luxury residential projects across the MENA region.
+                Established in 2012 as ANID, ImperialArc has evolved into a premier interiors and fit-out company based in Dubai. Our team brings over 60 years of combined experience in global interiors and fit-out execution, delivering exceptional hospitality and luxury residential projects across the MENA region.
               </p>
               <p className="text-gray-600 mb-8 leading-relaxed">
                 Our skilled craftsmen work meticulously to transform your vision into reality, whether it's a residential villa, commercial office, retail space, or hospitality project.

@@ -62,7 +62,7 @@ const Navbar = () => {
           <img 
             src="/lovable-uploads/63d2298c-9df3-4389-a38c-34cec49d215a.png" 
             alt="ImperialArc" 
-            className="h-10 sm:h-14 md:h-18 w-auto" 
+            className="h-10 sm:h-14 md:h-18 w-auto object-contain" 
           />
         </Link>
 

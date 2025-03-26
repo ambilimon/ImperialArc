@@ -1,3 +1,4 @@
+
 import { Link } from 'react-router-dom';
 
 const Footer = () => {
@@ -12,7 +13,7 @@ const Footer = () => {
               className="h-16 md:h-20 w-auto mb-6 filter brightness-0 invert object-contain" 
             />
             <p className="text-gray-300 mb-6">
-              Established in 2012 as ANID, ImperialArc has evolved into a premier joinery and fit-out company in the MENA region, delivering exceptional hospitality and luxury residential projects.
+              Established in 2012 as ANID, ImperialArc has evolved into a premier interiors and fit-out company in the MENA region, delivering exceptional hospitality and luxury residential projects.
             </p>
             <div className="flex space-x-4">
               <a href="#" className="w-10 h-10 bg-imperial-blue text-white flex items-center justify-center hover:bg-imperial-gold transition-colors duration-300">
@@ -63,10 +64,10 @@ const Footer = () => {
             <h3 className="text-lg font-serif font-semibold mb-6">Our Services</h3>
             <ul className="space-y-4">
               <li>
-                <Link to="/services#residential" className="text-gray-300 hover:text-imperial-gold transition-colors duration-300">Residential Joinery & Fit-out</Link>
+                <Link to="/services#residential" className="text-gray-300 hover:text-imperial-gold transition-colors duration-300">Residential Interiors & Fit-out</Link>
               </li>
               <li>
-                <Link to="/services#commercial" className="text-gray-300 hover:text-imperial-gold transition-colors duration-300">Commercial Joinery & Fit-out</Link>
+                <Link to="/services#commercial" className="text-gray-300 hover:text-imperial-gold transition-colors duration-300">Commercial Interiors & Fit-out</Link>
               </li>
               <li>
                 <Link to="/services#hospitality" className="text-gray-300 hover:text-imperial-gold transition-colors duration-300">Hospitality Projects</Link>
@@ -129,4 +130,3 @@ const Footer = () => {
 };
 
 export default Footer;
-

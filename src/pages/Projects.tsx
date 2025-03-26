@@ -73,7 +73,7 @@ const Projects = () => {
   return (
     <>
       <Helmet>
-        <title>Projects | ImperialArc - Luxury Joinery & Fit-out Solutions</title>
+        <title>Projects | ImperialArc - Luxury Interiors & Fit-out Solutions</title>
         <meta name="description" content="Explore our portfolio of luxury residential, hospitality, and commercial projects that showcase our craftsmanship and attention to detail." />
       </Helmet>
 
@@ -99,7 +99,7 @@ const Projects = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
             >
-              Discover our portfolio of exceptional luxury joinery and fit-out projects.
+              Discover our portfolio of exceptional luxury interiors and fit-out projects.
             </motion.p>
           </div>
         </div>
