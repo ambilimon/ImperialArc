@@ -120,6 +120,29 @@ const Index = () => {
     },
   ];
 
+  const achievementStats = [
+    { number: "14+", label: "Years of Experience", icon: (
+      <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-imperial-blue" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+      </svg>
+    ) },
+    { number: "200+", label: "Projects Completed", icon: (
+      <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-imperial-blue" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M5 13l4 4L19 7" />
+      </svg>
+    ) },
+    { number: "60+", label: "Years of Combined Expertise", icon: (
+      <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-imperial-blue" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+      </svg>
+    ) },
+    { number: "180+", label: "Happy Clients", icon: (
+      <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-imperial-blue" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+      </svg>
+    ) },
+  ];
+
   return (
     <>
       <Navbar />
@@ -181,22 +204,18 @@ const Index = () => {
                 Our skilled craftsmen work meticulously to transform your vision into reality, whether it's a residential villa, commercial office, retail space, or hospitality project.
               </p>
               <div className="grid grid-cols-2 gap-6 mb-8">
-                <div>
-                  <div className="text-3xl font-display font-bold text-imperial-blue mb-2">14+</div>
-                  <p className="text-gray-500">Years of Experience</p>
-                </div>
-                <div>
-                  <div className="text-3xl font-display font-bold text-imperial-blue mb-2">200+</div>
-                  <p className="text-gray-500">Projects Completed</p>
-                </div>
-                <div>
-                  <div className="text-3xl font-display font-bold text-imperial-blue mb-2">60+</div>
-                  <p className="text-gray-500">Years of Combined Expertise</p>
-                </div>
-                <div>
-                  <div className="text-3xl font-display font-bold text-imperial-blue mb-2">180+</div>
-                  <p className="text-gray-500">Happy Clients</p>
-                </div>
+                {achievementStats.slice(0, 2).map((stat, index) => (
+                  <div key={index} className="flex items-start">
+                    <div className="text-3xl font-display font-bold text-imperial-blue mb-2">{stat.number}</div>
+                    <p className="text-gray-500">{stat.label}</p>
+                  </div>
+                ))}
+                {achievementStats.slice(2, 4).map((stat, index) => (
+                  <div key={index + 2} className="flex items-start">
+                    <div className="text-3xl font-display font-bold text-imperial-blue mb-2">{stat.number}</div>
+                    <p className="text-gray-500">{stat.label}</p>
+                  </div>
+                ))}
               </div>
               <Link to="/about" className="luxury-btn">
                 Learn More About Us
@@ -204,11 +223,21 @@ const Index = () => {
             </div>
             
             <div className="relative order-1 lg:order-2 scroll-transition">
-              <img
-                src="/lovable-uploads/2258ca14-5ddd-4bcb-ba3a-f69b475b2e52.png"
-                alt="ImperialArc Team"
-                className="w-full h-auto shadow-xl"
-              />
+              <div className="grid grid-cols-2 gap-6">
+                {achievementStats.map((stat, index) => (
+                  <div 
+                    key={index} 
+                    className="bg-white p-6 rounded-lg shadow-xl border-l-4 border-imperial-blue hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1"
+                    style={{ animationDelay: `${index * 0.15}s` }}
+                  >
+                    <div className="flex flex-col items-center text-center">
+                      <div className="mb-4">{stat.icon}</div>
+                      <div className="text-4xl font-bold text-imperial-blue mb-2">{stat.number}</div>
+                      <div className="text-gray-600 text-sm">{stat.label}</div>
+                    </div>
+                  </div>
+                ))}
+              </div>
               <div className="absolute -bottom-6 -left-6 w-24 h-24 bg-imperial-blue flex items-center justify-center shadow-lg">
                 <span className="text-white font-display font-bold text-sm text-center leading-tight">
                   EXCELLENCE SINCE 2012

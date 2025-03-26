@@ -1,3 +1,4 @@
+
 import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Navbar from '../components/Navbar';
@@ -90,6 +91,13 @@ const About = () => {
 
   const SHOW_TEAM_SECTION = false;
 
+  const statsData = [
+    { value: '14+', label: 'Years of Excellence', color: 'bg-imperial-blue' },
+    { value: '200+', label: 'Projects Completed', color: 'bg-imperial-gold' },
+    { value: '60+', label: 'Years Combined Experience', color: 'bg-emerald-600' },
+    { value: '95%', label: 'Client Satisfaction', color: 'bg-gray-700' },
+  ];
+
   return (
     <>
       <Navbar />
@@ -142,12 +150,17 @@ const About = () => {
             </div>
             
             <div className="relative scroll-transition">
-              <img
-                src="/lovable-uploads/2258ca14-5ddd-4bcb-ba3a-f69b475b2e52.png"
-                alt="ImperialArc Team"
-                className="w-full h-auto rounded-none shadow-xl"
-              />
-              <div className="absolute -bottom-6 -right-6 w-48 h-48 border-8 border-imperial-blue"></div>
+              <div className="grid grid-cols-2 gap-4">
+                {statsData.map((stat, index) => (
+                  <div key={index} className="relative group">
+                    <div className={`${stat.color} h-full w-full absolute -top-2 -left-2 opacity-20 transition-all duration-300 group-hover:opacity-30 group-hover:-top-3 group-hover:-left-3`}></div>
+                    <div className="bg-white p-8 border border-gray-200 shadow-lg relative z-10">
+                      <div className="text-4xl font-serif font-bold text-imperial-blue mb-2">{stat.value}</div>
+                      <div className="text-gray-600">{stat.label}</div>
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </div>
