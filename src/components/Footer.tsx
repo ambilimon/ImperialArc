@@ -1,4 +1,3 @@
-
 import { Link } from 'react-router-dom';
 
 const Footer = () => {
@@ -6,12 +5,11 @@ const Footer = () => {
     <footer className="bg-imperial-dark text-white">
       <div className="luxury-container py-16 md:py-20">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
-          {/* Company Info */}
           <div>
             <img 
               src="/lovable-uploads/63d2298c-9df3-4389-a38c-34cec49d215a.png" 
               alt="ImperialArc" 
-              className="h-16 md:h-20 w-auto mb-6" 
+              className="h-16 md:h-20 w-auto mb-6 filter brightness-0 invert" 
             />
             <p className="text-gray-300 mb-6">
               Established in 2012 as ANID, ImperialArc has evolved into a premier joinery and fit-out company in the MENA region, delivering exceptional hospitality and luxury residential projects.
@@ -40,7 +38,6 @@ const Footer = () => {
             </div>
           </div>
           
-          {/* Quick Links */}
           <div>
             <h3 className="text-lg font-serif font-semibold mb-6">Quick Links</h3>
             <ul className="space-y-4">
@@ -62,7 +59,6 @@ const Footer = () => {
             </ul>
           </div>
           
-          {/* Services */}
           <div>
             <h3 className="text-lg font-serif font-semibold mb-6">Our Services</h3>
             <ul className="space-y-4">
@@ -84,7 +80,6 @@ const Footer = () => {
             </ul>
           </div>
           
-          {/* Contact Info */}
           <div>
             <h3 className="text-lg font-serif font-semibold mb-6">Contact Information</h3>
             <ul className="space-y-4">
@@ -118,10 +113,10 @@ const Footer = () => {
         </div>
       </div>
       
-      <div className="border-t border-gray-800">
+      <div className="border-t border-gray-800/50">
         <div className="luxury-container py-6">
           <div className="flex flex-col md:flex-row justify-between items-center">
-            <p className="text-gray-400 mb-4 md:mb-0">© 2024 ImperialArc. All rights reserved.</p>
+            <p className="text-gray-300 mb-4 md:mb-0">© 2024 ImperialArc. All rights reserved.</p>
             <div className="flex space-x-6">
               <a href="#" className="text-gray-400 hover:text-imperial-gold transition-colors duration-300">Privacy Policy</a>
               <a href="#" className="text-gray-400 hover:text-imperial-gold transition-colors duration-300">Terms of Service</a>

@@ -52,7 +52,9 @@ const Navbar = () => {
   return (
     <nav
       className={`fixed w-full top-0 z-50 transition-all duration-300 ${
-        isScrolled ? 'bg-white shadow-md py-2' : 'bg-transparent py-4'
+        isScrolled 
+          ? 'bg-white/90 backdrop-blur-md shadow-md py-2' 
+          : 'bg-neutral-50/80 backdrop-blur-sm py-4'
       }`}
     >
       <div className="luxury-container flex justify-between items-center">
@@ -72,7 +74,7 @@ const Navbar = () => {
               className={`font-display font-medium text-sm tracking-wider transition-colors duration-300 ${
                 location.pathname === link.path
                   ? 'text-imperial-gold'
-                  : isScrolled ? 'text-imperial-dark hover:text-imperial-gold' : 'text-white hover:text-imperial-gold'
+                  : 'text-imperial-dark hover:text-imperial-gold'
               } link-underline`}
             >
               {link.name.toUpperCase()}
