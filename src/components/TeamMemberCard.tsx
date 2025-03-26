@@ -23,7 +23,7 @@ const TeamMemberCard = ({
   name,
   designation,
   bio,
-  imageUrl,
+  imageUrl = 'https://images.unsplash.com/photo-1531297484001-80022131f5a1',
   onEdit,
   onDelete,
   onMoveUp,

@@ -36,7 +36,9 @@ type TeamMemberFormProps = {
 const TeamMemberForm = ({ id, initialData, onSuccess, onCancel }: TeamMemberFormProps) => {
   const { toast } = useToast();
   const [uploading, setUploading] = useState(false);
-  const [imageUrl, setImageUrl] = useState<string | undefined>(initialData?.image_url);
+  const [imageUrl, setImageUrl] = useState<string | undefined>(
+    initialData?.image_url || 'https://images.unsplash.com/photo-1531297484001-80022131f5a1'
+  );
   const [imageFile, setImageFile] = useState<File | null>(null);
 
   const form = useForm<FormValues>({

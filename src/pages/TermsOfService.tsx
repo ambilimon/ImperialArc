@@ -19,7 +19,7 @@ const TermsOfService = () => {
         {/* Hero Section */}
         <div className="relative h-[30vh] md:h-[40vh] bg-imperial-dark overflow-hidden">
           <div className="absolute inset-0 bg-black opacity-60 z-10"></div>
-          <div className="absolute inset-0 bg-[url('/lovable-uploads/2258ca14-5ddd-4bcb-ba3a-f69b475b2e52.png')] bg-cover bg-center"></div>
+          <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1531297484001-80022131f5a1')] bg-cover bg-center"></div>
           <div className="relative z-20 h-full flex flex-col items-center justify-center text-center text-white px-4">
             <motion.h1 
               className="text-3xl md:text-4xl lg:text-5xl font-serif font-bold mb-4"
