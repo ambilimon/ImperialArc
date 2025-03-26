@@ -5,6 +5,7 @@ import Footer from '../components/Footer';
 import ServiceCard from '../components/ServiceCard';
 import ProjectCard from '../components/ProjectCard';
 import TestimonialCard from '../components/TestimonialCard';
+import HomeQuiz from '../components/HomeQuiz';
 
 const Index = () => {
   useEffect(() => {
@@ -402,6 +403,9 @@ const Index = () => {
           </div>
         </div>
       </section>
+
+      {/* Interactive Quiz Section */}
+      <HomeQuiz />
 
       {/* Contact CTA */}
       <section className="py-20 md:py-32 bg-imperial-dark relative">
